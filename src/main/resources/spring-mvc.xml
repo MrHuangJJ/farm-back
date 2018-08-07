@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                            http://www.springframework.org/schema/mvc  http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <!-- 不启用 -->
+    <!--<mvc:annotation-driven enable-matrix-variables="true" />-->
+    <!-- 启动 注解驱动 -->
+    <mvc:annotation-driven></mvc:annotation-driven>
+    <!--  配置静态资源的访问 -->
+    <!--<mvc:resources location="/static/" mapping="/static/**" />-->
+    <!-- 扫描 controller -->
+    <context:component-scan base-package="com.lanzan.controller"></context:component-scan>
+
+    <!-- 定义跳转的文件的前后缀 ，视图模式配置-->
+    <!-- 配置视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+    <!-- 上传文件 -->
+    <!--<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"/>
+        &lt;!&ndash; 最大内存大小 &ndash;&gt;
+        <property name="maxInMemorySize" value="10240"/>
+        &lt;!&ndash; 最大文件大小，-1为不限制大小 &ndash;&gt;
+        <property name="maxUploadSize" value="102400000"/>
+    </bean>-->
+
+
+</beans>
