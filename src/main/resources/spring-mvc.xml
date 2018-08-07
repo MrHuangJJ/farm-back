@@ -15,7 +15,7 @@
     <!-- 扫描 controller -->
     <context:component-scan base-package="com.lanzan.controller"></context:component-scan>
 
-    <!-- 定义跳转的文件的前后缀 ，视图模式配置-->
+    <!-- 定义跳转的文件的前后缀，视图模式配置-->
     <!-- 配置视图解析器 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/"></property>

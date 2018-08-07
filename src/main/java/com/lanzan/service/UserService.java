@@ -1,8 +1,8 @@
-package com.lanzan.dao;
+package com.lanzan.service;
 
 import com.lanzan.entity.User;
 
-public interface UserMapper {
+public interface UserService {
 
     // 根据用户名获取user对象
     User getUserWhereuname(String uname);

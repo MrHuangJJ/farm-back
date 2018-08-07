@@ -4,9 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lanzan.dao.UserMapper">
 
-    <!--根据审核状态 查询用户 0 未审核 1 通过审核 2 未通过审核-->
-    <select id="getUserByState" resultType="User">
-        SELECT * FROM user
+    <!--根据用户名获取user对象-->
+    <select id="getUserWhereuname" resultType="com.lanzan.entity.User" parameterType="String">
+        SELECT uid,uname,upass FROM user WHERE uname=#{uname}
     </select>
 
 </mapper>
