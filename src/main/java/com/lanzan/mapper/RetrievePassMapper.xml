@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanzan.dao.RetrievePassMapper">
+
+    <!-- 判断用户名与手机号是否一致 -->
+    <select id="getNameAndPhoneAccordance" resultType="int">
+        SELECT COUNT(*) FROM userinfo WHERE uid=#{uid} AND uiphone=#{uiphone}
+    </select>
+
+    <!-- 根据用户名修改密码 -->
+    <update id="updatePassInuname" parameterType="com.lanzan.entity.User">
+        UPDATE user SET upass=#{upass} WHERE uname=#{uname}
+    </update>
+
+</mapper>

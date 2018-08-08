@@ -20,17 +20,22 @@ public class JudgeWhetherExistController {
     @RequestMapping(value = "getJudgeUnameWhetherExist")
     @ResponseBody
     public String getpwdphone(String uname){
-        System.out.println("=="+uname);
-        int getname=judgeWhetherExistService.getunameyesno(uname);
-        System.out.println("=="+getname);
-        String getunameExist="";
-        if (getname>0){
-            getunameExist="1234";
+        if (uname!=null){
+            int getname=judgeWhetherExistService.getunameyesno(uname);
+            System.out.println("=="+getname);
+            String getunameExist="";
+            if (getname>0){
+                //存在
+                getunameExist="1234";
+            }else{
+                //不存在
+                getunameExist="4321";
+            }
+            return getunameExist;
         }else{
-            getunameExist="4321";
+
         }
-        System.out.println("=="+getunameExist);
-        return getunameExist;
+        return null;
     }
 
 }

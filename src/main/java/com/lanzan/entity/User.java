@@ -2,10 +2,13 @@ package com.lanzan.entity;
 
 public class User {
 
+    //用户编号
     private int uid;
 
+    //用户名
     private String uname;
 
+    //密码
     private String upass;
 
 

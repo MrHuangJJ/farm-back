@@ -16,8 +16,7 @@ public class MyRealm extends AuthorizingRealm{
 	//认证
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-		System.out.println("今日认证");
-		//获取传递过来的数据
+		/*//获取传递过来的数据
 		UsernamePasswordToken usernamePasswordToken=(UsernamePasswordToken) token;
 		//拿到输入的用户账号
 		String uname=usernamePasswordToken.getUsername();
@@ -27,8 +26,8 @@ public class MyRealm extends AuthorizingRealm{
 			return null;
 		}
 		//认证，把认证的结果 返回
-		SimpleAuthenticationInfo simpleAuthenticationInfo=new SimpleAuthenticationInfo(u_user, u_user.getUpass(), this.getName());
-		return simpleAuthenticationInfo;
+		SimpleAuthenticationInfo simpleAuthenticationInfo=new SimpleAuthenticationInfo(u_user, u_user.getUpass(), this.getName());*/
+		return null;
 	}
 
 	//授权
