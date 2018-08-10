@@ -18,11 +18,21 @@
         <property name="password" value="${upass}"></property>
         <property name="driverClass" value="${driver_Class}"></property>
         <property name="jdbcUrl" value="${url}"></property>
-        <property name="initialPoolSize" value="${initPoolSize}"></property>
-        <property name="maxPoolSize" value="${maxPoolSize}"></property>
+        <!--初始化连接数量-->
+        <property name="initialPoolSize" value="5" />
+        <!-- c3p0连接池的私有属性 -->
+        <property name="maxPoolSize" value="30" />
+        <property name="minPoolSize" value="10" />
+        <!-- 关闭连接不自动commit -->
+        <property name="autoCommitOnClose" value="false" />
+        <!-- 获取连接超时时间 -->
+        <property name="checkoutTimeout" value="10000" />
+        <!-- 当获取连接失败时重试次数 -->
+        <property name="acquireRetryAttempts" value="2" />
+
     </bean>
 
-    <!--配置SqlSessionFactory-->
+    <!--配置mybatis的SqlSessionFactory-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <!--引入数据源-->
         <property name="dataSource" ref="dataSource"></property>
@@ -37,77 +47,7 @@
         <property name="basePackage" value="com.lanzan.dao"></property>
     </bean>
 
-    <!-- shiro start -->
-    <!-- 1. 配置SecurityManager -->
-    <!--<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-        &lt;!&ndash;<property name="cacheManager" ref="cacheManager" />&ndash;&gt;
-        <property name="authenticator" ref="authenticator"></property>
-        &lt;!&ndash; 可以配置多个Realm，其实会把realms属性赋值给ModularRealmAuthenticator的realms属性 &ndash;&gt;
-        <property name="realms">
-            <list>
-                <ref bean="userRealm" />
-            </list>
-        </property>
-    </bean>-->
-
-    <!--&lt;!&ndash; 2. 配置CacheManager &ndash;&gt;
-    &lt;!&ndash; 2.1 需要加入ehcache的jar包及配置文件 &ndash;&gt;
-    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
-        <property name="cacheManagerConfigFile" value="classpath:ehcache.xml" />
-    </bean>-->
-
-    <!-- 3. 配置Realm -->
-    <!-- 3.1 直接配置继承了org.apache.shiro.realm.AuthorizingRealm的bean -->
-    <!--<bean id="userRealm" class="com.lanzan.shiro.MyRealm">
-        &lt;!&ndash; 配置密码匹配器 &ndash;&gt;
-        <property name="credentialsMatcher">
-            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-                &lt;!&ndash; 加密算法为MD5 &ndash;&gt;
-                <property name="hashAlgorithmName" value="MD5"></property>
-                &lt;!&ndash; 加密次数 &ndash;&gt;
-                <property name="hashIterations" value="1024"></property>
-            </bean>
-        </property>
-    </bean>-->
-
-    <!-- 4. 配置LifecycleBeanPostProcessor，可以自定义地来调用配置在Spring IOC容器中shiro bean的生命周期方法 -->
-    <!--<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />-->
-
-    <!-- 5. 使能够在IOC容器中使用shiro的注解，但必须在配置了LifecycleBeanPostProcessor之后才可以使用 -->
-    <!--<bean
-            class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
-            depends-on="lifecycleBeanPostProcessor" />
-    <bean
-            class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-        <property name="securityManager" ref="securityManager" />
-    </bean>-->
-
-    <!-- 6. 配置ShiroFilter -->
-    <!-- 6.1 id必须和web.xml中配置的DelegatingFilterProxy的<filter-name>一致。 如果不一致，会抛出NoSuchBeanDefinitionException异常，因为shiro会在IOC容器中查找名称和<filter-name>
-        值一致的filter bean -->
-    <!--<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
-        <property name="securityManager" ref="securityManager" />
-        <property name="loginUrl" value="/test.html" />
-        <property name="successUrl" value="/test.html" />
-        <property name="unauthorizedUrl" value="/test.html" />
-        &lt;!&ndash; 配置哪些页面需要受保护，以及访问这些页面需要的权限 &ndash;&gt;
-        <property name="filterChainDefinitions">
-            <value>
-                &lt;!&ndash; 第一次匹配优先的原则 &ndash;&gt;
-                /test.html = anon
-
-                /** = authc
-            </value>
-        </property>
-    </bean>-->
-
-    <!-- 7. 配置ModularRealmAuthenticator，可以实现多Realm认证 -->
-    <!--<bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
-        &lt;!&ndash; 配置认证策略，只要有一个Realm认证成功即可，并且返回所有认证成功信息 &ndash;&gt;
-        <property name="authenticationStrategy">
-            <bean class="org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy"></bean>
-        </property>
-    </bean>-->
-    <!-- shiro end -->
+    <!-- 引入shiro配置 -->
+    <import resource="spring-shiro.xml"/>
 
 </beans>

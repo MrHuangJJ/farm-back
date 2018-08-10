@@ -30,19 +30,15 @@ public class UserController {
     public String login(User user){
         System.out.println("进入");
         Subject subject= SecurityUtils.getSubject();
-        if (!subject.isAuthenticated()) {
-            UsernamePasswordToken token=new UsernamePasswordToken(user.getUname(), user.getUpass());
-            token.setRememberMe(false);
+        UsernamePasswordToken token=new UsernamePasswordToken(user.getUname(), user.getUpass());
             try {
                 subject.login(token);
                 return "index";
-            } catch (IncorrectCredentialsException ice) {
-                System.out.println("邮箱/密码不匹配！");
-            } catch (LockedAccountException lae) {
-                System.out.println("账户已被冻结！");
+            } catch (Exception ice) {
+                ice.printStackTrace();
+                System.out.println("账号/密码不匹配！");
+                return "login";
             }
-        }
-        return "login";
     }
 
 }

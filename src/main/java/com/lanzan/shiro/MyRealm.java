@@ -6,6 +6,7 @@ import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class MyRealm extends AuthorizingRealm{
@@ -16,18 +17,20 @@ public class MyRealm extends AuthorizingRealm{
 	//认证
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-		/*//获取传递过来的数据
+		System.out.println("今日realm");
+		//获取传递过来的数据
 		UsernamePasswordToken usernamePasswordToken=(UsernamePasswordToken) token;
 		//拿到输入的用户账号
 		String uname=usernamePasswordToken.getUsername();
 		//根据用户名拿对象
 		User u_user=userMapper.getUserWhereuname(uname);
-		if(u_user==null){
-			return null;
-		}
-		//认证，把认证的结果 返回
-		SimpleAuthenticationInfo simpleAuthenticationInfo=new SimpleAuthenticationInfo(u_user, u_user.getUpass(), this.getName());*/
-		return null;
+		//当前realm对象的name
+		//String realmName = getName();
+		//盐值
+		//ByteSource credenttialsSalt = ByteSource.Util.bytes(u_user.getUname());
+		//封装用户信息，构建AuthenticationInfo对象并返回
+		SimpleAuthenticationInfo simpleAuthenticationInfo=new SimpleAuthenticationInfo(u_user, u_user.getUpass(), this.getName());
+		return simpleAuthenticationInfo;
 	}
 
 	//授权

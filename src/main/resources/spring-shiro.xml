@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 1、将自定义Realm加入IOC容器 -->
+    <bean id="myRealm" class="com.lanzan.shiro.MyRealm">
+        <!-- 配置MD5加密，若不进行MD5加密，这段代码不用 -->
+        <property name="credentialsMatcher">
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <!-- MD5加密 -->
+                <property name="hashAlgorithmName" value="MD5"/>
+                <!-- 加密次数 -->
+                <property name="hashIterations" value="1024"/>
+            </bean>
+        </property>
+    </bean>
+
+    <!-- 2、配置安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myRealm"/>
+    </bean>
+
+    <!-- 3、配置Shiro过滤器，id名必须和web.xml中的过滤器名一致 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- Shiro的核心安全接口,这个属性是必须的 -->
+        <property name="securityManager" ref="securityManager"/>
+        <!-- 身份认证失败，则跳转到登录页面的配置 -->
+        <property name="loginUrl" value="/test.html"/>
+        <!-- 权限认证失败，则跳转到指定页面 -->
+        <property name="unauthorizedUrl" value="/test.html"/>
+        <!-- Shiro连接约束配置,即过滤链的定义 -->
+    </bean>
+
+    <!-- 4、保证实现了Shiro内部lifecycle函数的bean执行 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+</beans>
