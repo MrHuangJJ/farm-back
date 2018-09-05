@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanzan.dao.RealTimeMapper">
+
+    <!-- 添加实时位置数据 -->
+    <insert id="addRealTime" parameterType="com.lanzan.entity.RealTime">
+        INSERT INTO realtime(acode,carId,direction,gpstime,la,lat,lng,lo,mileage,online,pointed,scode,speed,stopTime,strGGPV)
+		    VALUES (#{acode},#{carId},#{direction},#{gpstime},#{la},#{lat},#{lng},#{lo},#{mileage},#{online},#{pointed},#{scode},#{speed},#{stopTime},#{strGGPV})
+    </insert>
+
+    <!-- 修改实时位置数据 -->
+    <update id="updateRealTime" parameterType="com.lanzan.entity.RealTime">
+        UPDATE realtime SET acode=#{acode},direction=#{direction},gpstime=#{gpstime},la=#{la},lat=#{lat},lng=#{lng},lo=#{lo},mileage=#{mileage},online=#{online},pointed=#{pointed},scode=#{scode},speed=#{speed},stopTime=#{stopTime},strGGPV=#{strGGPV} WHERE carId=#{carId}
+    </update>
+
+    <!-- 判断车辆是否存在 -->
+    <select id="getcarIdyesno" resultType="int" parameterType="int">
+        SELECT COUNT(*) FROM realtime WHERE carId=#{carId}
+    </select>
+
+    <!-- 查询车辆实时位置 -->
+    <select id="listRealTime" resultType="com.lanzan.entity.RealTime">
+        SELECT * FROM realtime
+    </select>
+
+</mapper>
