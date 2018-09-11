@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service(value = "carsService")
 public class CarsServiceImp implements CarsService{
 
@@ -18,6 +20,10 @@ public class CarsServiceImp implements CarsService{
         carsMapper.addCars(cars);
     }
 
+    // 查询全部车辆的carId
+    public List<Cars> listCarId() {
+        return carsMapper.listCarId();
+    }
 
 
 }

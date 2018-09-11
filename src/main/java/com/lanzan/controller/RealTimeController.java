@@ -17,18 +17,14 @@ public class RealTimeController {
 
     /**
      * 查询车辆实时位置
-     * @param
-     *
      * @return
      */
-    @RequestMapping(value = "listRealTime")
+    @RequestMapping(value = "listLocation")
     @ResponseBody
-    public List<RealTime> listRealTime(){
-        System.out.println("进人查询全部无人机型号");
-        List<RealTime> realTimes=realTimeService.listRealTime();
+    public List<RealTime> listLocation(){
+        List<RealTime> realTimes=realTimeService.listLocation();
         return realTimes;
     }
-
 
 
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanzan.dao.ElectronicFenceMapper">
+
+    <!-- 添加电子围栏 -->
+    <insert id="addElectronicFence" parameterType="com.lanzan.entity.ElectronicFence">
+        INSERT INTO electronicFence(ef_name,ef_coordinate,ef_remark)
+           VALUES (#{ef_name},#{ef_coordinate},#{ef_remark})
+    </insert>
+
+    <!-- 查询电子围栏数据 -->
+    <select id="listElectronicFence" resultType="com.lanzan.entity.ElectronicFence">
+        SELECT ef_id,ef_name,ef_coordinate,ef_remark FROM electronicFence
+    </select>
+
+</mapper>

@@ -1,5 +1,9 @@
 package com.lanzan.entity;
 
+/**
+ *
+ * 车辆信息
+ */
 public class Cars {
 
     private int carIcon;
@@ -77,5 +81,10 @@ public class Cars {
 
     public void setTeamId(int teamId) {
         this.teamId = teamId;
+    }
+
+    @Override
+    public String toString() {
+        return "" + carId + "";
     }
 }

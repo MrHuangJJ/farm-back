@@ -1,11 +1,8 @@
-package com.lanzan.entity;
+package com.lanzan.dto;
 
-/**
- *
- * 实时位置
- */
-public class RealTime {
+public class CarsRealTimeDto {
 
+    private String carNO;
     private String acode;
     private int carId;
     private int direction;
@@ -15,17 +12,17 @@ public class RealTime {
     private double lng;
     private double lo;
     private int mileage;
-    private boolean online;//车辆在线状态(true:在线)
     private int pointed;
     private String scode;
     private int speed;
     private int stopTime;
     private String strGGPV;
 
-    public RealTime() {
+    public CarsRealTimeDto() {
     }
 
-    public RealTime(String acode, int carId, int direction, String gpstime, double la, double lat, double lng, double lo, int mileage, boolean online, int pointed, String scode, int speed, int stopTime, String strGGPV) {
+    public CarsRealTimeDto(String carNO, String acode, int carId, int direction, String gpstime, double la, double lat, double lng, double lo, int mileage, int pointed, String scode, int speed, int stopTime, String strGGPV) {
+        this.carNO = carNO;
         this.acode = acode;
         this.carId = carId;
         this.direction = direction;
@@ -35,12 +32,19 @@ public class RealTime {
         this.lng = lng;
         this.lo = lo;
         this.mileage = mileage;
-        this.online = online;
         this.pointed = pointed;
         this.scode = scode;
         this.speed = speed;
         this.stopTime = stopTime;
         this.strGGPV = strGGPV;
+    }
+
+    public String getCarNO() {
+        return carNO;
+    }
+
+    public void setCarNO(String carNO) {
+        this.carNO = carNO;
     }
 
     public String getAcode() {
@@ -113,14 +117,6 @@ public class RealTime {
 
     public void setMileage(int mileage) {
         this.mileage = mileage;
-    }
-
-    public boolean isOnline() {
-        return online;
-    }
-
-    public void setOnline(boolean online) {
-        this.online = online;
     }
 
     public int getPointed() {

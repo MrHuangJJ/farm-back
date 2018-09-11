@@ -10,4 +10,9 @@
           VALUES (#{carIcon},#{carId},#{carNO},#{machineNO},#{serviceStatus},#{serviceTime},#{teamId})
     </insert>
 
+    <!-- 查询全部车辆的carId -->
+    <select id="listCarId" resultType="com.lanzan.entity.Cars">
+        SELECT carId FROM cars
+    </select>
+
 </mapper>
