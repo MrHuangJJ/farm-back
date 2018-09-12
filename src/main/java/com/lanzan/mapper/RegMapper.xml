@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanzan.dao.RegMapper">
+
+    <!-- 注册信息添加 -->
+    <insert id="addRegInfo" parameterType="com.lanzan.entity.RegInfo">
+        INSERT INTO reginfo(ri_uname,ri_upass,ri_uiname,ri_uiphoto,ri_uiemail,ri_uiphone,
+                            ri_uicity,ri_urprincipal,ri_urfullname,ri_urabbreviation,
+                            ri_uraddress,ri_urlogo,ri_urlicense,ri_urtype)
+            VALUES(#{ri_uname},#{ri_upass},#{ri_uiname},#{ri_uiphoto},#{ri_uiemail},#{ri_uiphone},
+            #{ri_uicity},#{ri_urprincipal},#{ri_urfullname},#{ri_urabbreviation},#{ri_uraddress},
+            #{ri_urlogo},#{ri_urlicense},#{ri_urtype})
+    </insert>
+
+    <!-- 用户添加 -->
+    <insert id="addUser" parameterType="com.lanzan.entity.User">
+        INSERT INTO user(uid,uname,upass)
+	        VALUES(#{uid},#{uname},#{upass})
+    </insert>
+
+    <!-- 用户信息添加 -->
+    <insert id="addUserInfo" parameterType="com.lanzan.entity.UserInfo">
+        INSERT INTO userinfo(uid,ui_name,ui_photo,ui_email,ui_phone,ui_city)
+	        VALUES(#{uid},#{ui_name},#{ui_photo},#{ui_email},#{ui_phone},#{ui_city})
+    </insert>
+
+    <!-- 组织信息添加 -->
+    <insert id="addUserRegister" parameterType="com.lanzan.entity.UserRegister">
+        INSERT INTO userinfo(uid,ur_principal,ur_fullname,ur_abbreviation,ur_address,ur_logo,ur_license,ur_type)
+	        VALUES(#{uid},#{ur_principal},#{ur_fullname},#{ur_abbreviation},#{ur_address},#{ur_logo},#{ur_license},#{ur_type})
+    </insert>
+
+</mapper>

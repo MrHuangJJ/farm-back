@@ -16,4 +16,19 @@ public class JudgeWhetherExistServiceImp implements JudgeWhetherExistService {
         return judgeWhetherExistMapper.getunameyesno(uname);
     }
 
+    // 判断手机号是否存在
+    public int getPhoneYesNo(String phone) {
+        return judgeWhetherExistMapper.getPhoneYesNo(phone);
+    }
+
+    // 判断邮箱是否存在
+    public int getEmailYesNo(String email) {
+        return judgeWhetherExistMapper.getEmailYesNo(email);
+    }
+
+    // 判断carID是否存在
+    public int getCarIdYesNo(String carId) {
+        return judgeWhetherExistMapper.getCarIdYesNo(carId);
+    }
+
 }

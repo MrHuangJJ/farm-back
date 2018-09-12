@@ -17,8 +17,13 @@ public class VerificationCodeServiceImp implements VerificationCodeService{
         verificationCodeMapper.addVerificationCode(verificationCode);
     }
 
-    // 根据手机号查询最新验证码
+    // 根据手机号查询最新验证码-找回密码
     public String getphonenewcode(String vc_phone) {
         return verificationCodeMapper.getphonenewcode(vc_phone);
+    }
+
+    // 根据手机号查询最新验证码-注册
+    public String getRegPhoneEnEwCode(String regPhone) {
+        return verificationCodeMapper.getRegPhoneEnEwCode(regPhone);
     }
 }

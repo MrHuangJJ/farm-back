@@ -4,6 +4,7 @@ import com.lanzan.entity.Cars;
 import com.lanzan.entity.RealTime;
 import com.lanzan.service.CarsService;
 import com.lanzan.service.RealTimeService;
+import com.lanzan.service.JudgeWhetherExistService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.http.NameValuePair;
@@ -31,6 +32,8 @@ public class CarsController{
     private CarsService carsService;
     @Autowired
     private RealTimeService realTimeService;
+    @Autowired
+    private JudgeWhetherExistService judgeWhetherExistService;
 
     /**
      * 如果用的是同一个HttpClient且没去手动连接放掉client.getConnectionManager().shutdown();
@@ -118,7 +121,6 @@ public class CarsController{
         Map<String,List<NameValuePair>> map = new HashMap<String,List<NameValuePair>>();
         map.put(queryUrl, queryParams);
         Map<String,String> returnMap = doPostWithOneHttpclient(loginUrl, loginParams, map);
-        System.out.println(returnMap.values());
 
         //接收jsonArray数据
         JSONArray jsonArray = JSONArray.fromObject(returnMap.values());
@@ -139,7 +141,14 @@ public class CarsController{
                         cars.setServiceStatus((Integer) row.get("serviceStatus"));
                         cars.setServiceTime((String) row.get("serviceTime"));
                         cars.setTeamId((Integer) row.get("teamId"));
-                        carsService.addCars(cars);
+                        int car=judgeWhetherExistService.getCarIdYesNo((String) row.get("carId"));
+                        if (car>0){
+                            //存在 不做操作
+                            System.out.println("car==="+car);
+                        }else {
+                            //不存在 添加
+                            carsService.addCars(cars);
+                        }
                     }
                 }
             }
@@ -153,7 +162,7 @@ public class CarsController{
      * 实时位置数据添加
      *
      */
-    @Scheduled(cron = "0/10 * * * * ?")//每隔20秒执行一次
+    @Scheduled(cron = "0/5 * * * * ?")//每隔5秒执行一次
     public void addRealTime() {
         //登录的地址以及登录操作参数
         String loginUrl = "http://www.tbitgps.com/accountAction!login.do";
@@ -177,13 +186,6 @@ public class CarsController{
         }
         System.out.println(str);
         catParams.add(new BasicNameValuePair("carId",str+","));
-        //获取历史轨迹
-        /*String findUrl = "http://www.tbitgps.com/historyAction!findHistory.do";
-        List<NameValuePair> findParams = new ArrayList<NameValuePair>();
-        findParams.add(new BasicNameValuePair("carId","1242281"));
-        findParams.add(new BasicNameValuePair("startTime","2018-09-07 17:00"));
-        findParams.add(new BasicNameValuePair("endTime","2018-09-07 19:00"));
-        findParams.add(new BasicNameValuePair("mapType","1"));*/
 
         Map<String,List<NameValuePair>> map = new HashMap<String,List<NameValuePair>>();
         map.put(catUrl,catParams);
@@ -216,9 +218,10 @@ public class CarsController{
                     realTime.setStrGGPV((String) row.get("strGGPV"));
                     System.out.println("设备设备："+row.get("online"));
                     if (row.get("online").equals(true)){
-                        System.out.println("设备在线");
-                        //realTimeService.addRealTime(realTime);
+                        //在线添加数据
+                        realTimeService.addRealTime(realTime);
                     }else {
+                        //不在线不做操作
                         System.out.println("设备不在线");
                     }
                 }

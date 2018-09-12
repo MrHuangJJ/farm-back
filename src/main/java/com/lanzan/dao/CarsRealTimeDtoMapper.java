@@ -5,6 +5,10 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+/**
+ *
+ * 历史轨迹
+ */
 public interface CarsRealTimeDtoMapper {
 
     // 历史轨迹

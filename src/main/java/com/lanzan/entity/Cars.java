@@ -7,6 +7,7 @@ package com.lanzan.entity;
 public class Cars {
 
     private int carIcon;
+    // 车辆编号
     private int carId;
     private String carNO;
     private String machineNO;

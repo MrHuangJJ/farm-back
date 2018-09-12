@@ -4,6 +4,10 @@ import com.lanzan.entity.Cars;
 
 import java.util.List;
 
+/**
+ *
+ *
+ */
 public interface CarsMapper {
 
     // 查询车辆是否在线

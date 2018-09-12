@@ -60,21 +60,25 @@ public class RetrievePassController {
             verificationCodeService.addVerificationCode(verificationCode);
         }else{
             //不存在
-            getuiphoneAccordance="2222";
+            getuiphoneAccordance="false";
         }
         return getuiphoneAccordance;
     }
 
     /**
      * 修改密码
-     * @param user uname 用户名 upass 密码
+     * @param user
      * @return
      */
     @RequestMapping(value = "updatePassInuname")
     @ResponseBody
     public String updatePassInuname(User user){
-        retrievePassService.updatePassInuname(user);
-        return "login";
+        if (user.getUname()!=null && user.getUname()!="" && user.getUpass()!=null && user.getUpass()!=""){
+            retrievePassService.updatePassInuname(user);
+            return "login";
+        }else {
+            return null;
+        }
     }
 
 

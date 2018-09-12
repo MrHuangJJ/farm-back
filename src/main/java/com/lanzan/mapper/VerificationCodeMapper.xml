@@ -9,9 +9,14 @@
          INSERT INTO verificationcode(vc_phone,vc_code,vc_state) VALUES (#{vc_phone},#{vc_code},#{vc_state})
     </insert>
 
-    <!-- 根据手机号查询最新验证码 -->
+    <!-- 根据手机号查询最新验证码-找回密码 -->
     <select id="getphonenewcode" resultType="String" parameterType="String">
          SELECT vc_code FROM verificationcode WHERE vc_phone=#{vc_phone} AND vc_state="B" order by vc_id desc LIMIT 1
+    </select>
+
+    <!-- 根据手机号查询最新验证码-注册 -->
+    <select id="getRegPhoneEnEwCode" resultType="String" parameterType="String">
+        SELECT vc_code FROM verificationcode WHERE vc_phone=#{regPhone} AND vc_state="A" order by vc_id desc LIMIT 1
     </select>
 
 </mapper>

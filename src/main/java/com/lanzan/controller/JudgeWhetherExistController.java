@@ -20,22 +20,69 @@ public class JudgeWhetherExistController {
     @RequestMapping(value = "getJudgeUnameWhetherExist")
     @ResponseBody
     public String getpwdphone(String uname){
-        if (uname!=null){
-            int getname=judgeWhetherExistService.getunameyesno(uname);
-            System.out.println("=="+getname);
-            String getunameExist="";
-            if (getname>0){
+        if (uname!=null && uname!=""){
+            int getName=judgeWhetherExistService.getunameyesno(uname);
+            String getNameExist="";
+            if (getName>0){
                 //存在
-                getunameExist="1234";
+                getNameExist="true";
             }else{
                 //不存在
-                getunameExist="4321";
+                getNameExist="false";
             }
-            return getunameExist;
+            return getNameExist;
         }else{
-
+            return null;
         }
-        return null;
     }
+
+    /**
+     * 判断手机号是否存在
+     * @param phone
+     * @return
+     */
+    @RequestMapping(value = "getJudgePhoneWhetherExist")
+    @ResponseBody
+    public String getPhoneYesNo(String phone){
+        if (phone!=null && phone!=""){
+            int getPhone=judgeWhetherExistService.getPhoneYesNo(phone);
+            String getPhoneExist="";
+            if (getPhone>0){
+                //存在
+                getPhoneExist="true";
+            }else{
+                //不存在
+                getPhoneExist="false";
+            }
+            return getPhoneExist;
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     * 判断邮箱是否存在
+     * @param email
+     * @return
+     */
+    @RequestMapping(value = "getJudgeEmailWhetherExist")
+    @ResponseBody
+    public String getEmailYesNo(String email){
+        if (email!=null && email!=""){
+            int getEmail=judgeWhetherExistService.getEmailYesNo(email);
+            String getEmailExist="";
+            if (getEmail>0){
+                //存在
+                getEmailExist="true";
+            }else{
+                //不存在
+                getEmailExist="false";
+            }
+            return getEmailExist;
+        }else{
+            return null;
+        }
+    }
+
 
 }

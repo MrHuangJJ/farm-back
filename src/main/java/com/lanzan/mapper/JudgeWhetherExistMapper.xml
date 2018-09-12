@@ -9,4 +9,19 @@
         SELECT COUNT(*) FROM user WHERE uname=#{uname}
     </select>
 
+    <!-- 判断手机号是否存在 -->
+    <select id="getPhoneYesNo" resultType="int" parameterType="String">
+        SELECT COUNT(*) FROM userinfo WHERE ui_phone=#{phone}
+    </select>
+
+    <!-- 判断邮箱是否存在 -->
+    <select id="getEmailYesNo" resultType="int" parameterType="String">
+        SELECT COUNT(*) FROM userinfo WHERE ui_email=#{email}
+    </select>
+
+    <!-- 判断carID是否存在 -->
+    <select id="getCarIdYesNo" resultType="int" parameterType="String">
+        SELECT COUNT(*) FROM cars WHERE carId=#{carId}
+    </select>
+
 </mapper>
