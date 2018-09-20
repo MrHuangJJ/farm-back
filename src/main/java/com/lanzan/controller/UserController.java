@@ -3,7 +3,10 @@ package com.lanzan.controller;
 import com.lanzan.entity.User;
 import com.lanzan.entity.UserInfo;
 import com.lanzan.service.UserService;
+import com.lanzan.util.ResultUtil;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +38,29 @@ public class UserController {
         System.out.println("进入");
         Subject subject= SecurityUtils.getSubject();
         UsernamePasswordToken token=new UsernamePasswordToken(user.getUname(), user.getUpass());
-            try {
+            /*try {
                 subject.login(token);
                 return "index";
             } catch (Exception ice) {
                 ice.printStackTrace();
                 System.out.println("账号/密码不匹配！");
                 return "login";
-            }
+            }*/
+        try {
+            //调取shiro框架的验证
+            subject.login(token);
+            return "login";
+        }catch (UnknownAccountException e){
+            System.out.println("用户不存在或错误");
+            return "UnknownAccountException";
+        }catch (IncorrectCredentialsException ex){
+            System.out.println("用户不存在或错误");
+            return "IncorrectCredentialsException";
+        }catch (Exception e){
+            System.out.println("内部错误，请重试");
+            e.printStackTrace();
+            return "Exception";
+        }
     }
 
     /**

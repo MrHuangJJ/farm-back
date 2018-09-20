@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +47,7 @@ public class ElectronicFenceController {
      */
     @RequestMapping(value = "listElectronicFence",method = RequestMethod.GET)
     @ResponseBody
-    public List<ElectronicFence> listElectronicFence(){
+    public List<ElectronicFence> listElectronicFence(HttpServletRequest request, HttpServletResponse response){
        List<ElectronicFence> electronicFences = electronicFenceService.listElectronicFence();
        return electronicFences;
     }

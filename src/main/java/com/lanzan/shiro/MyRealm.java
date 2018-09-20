@@ -4,6 +4,7 @@ import com.lanzan.dao.UserMapper;
 import com.lanzan.entity.User;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
@@ -22,8 +23,13 @@ public class MyRealm extends AuthorizingRealm{
 		UsernamePasswordToken usernamePasswordToken=(UsernamePasswordToken) token;
 		//拿到输入的用户账号
 		String uname=usernamePasswordToken.getUsername();
+		System.out.println(uname);
 		//根据用户名拿对象
 		User u_user=userMapper.getUserWhereuname(uname);
+		if (u_user == null){
+			return null;
+		}
+		System.out.println("数据库：" + u_user.getUname() + "  " + u_user.getUpass());
 		//当前realm对象的name
 		//String realmName = getName();
 		//盐值
@@ -46,9 +52,10 @@ public class MyRealm extends AuthorizingRealm{
 		if("admin".equals(uname)){
 			roles.add("father");
 		}*//*
+		*/
 		SimpleAuthorizationInfo authorizationInfo=new SimpleAuthorizationInfo();
-		authorizationInfo.addRoles(roles);*/
-		return null;
+		/*authorizationInfo.addRoles(roles);*/
+		return authorizationInfo;
 	}
 
 }

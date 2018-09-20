@@ -6,14 +6,14 @@
     <!-- 1、将自定义Realm加入IOC容器 -->
     <bean id="myRealm" class="com.lanzan.shiro.MyRealm">
         <!-- 配置MD5加密，若不进行MD5加密，这段代码不用 -->
-        <property name="credentialsMatcher">
+        <!--<property name="credentialsMatcher">
             <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-                <!-- MD5加密 -->
+                &lt;!&ndash; MD5加密 &ndash;&gt;
                 <property name="hashAlgorithmName" value="MD5"/>
-                <!-- 加密次数 -->
+                &lt;!&ndash; 加密次数 &ndash;&gt;
                 <property name="hashIterations" value="1024"/>
             </bean>
-        </property>
+        </property>-->
     </bean>
 
     <!-- 2、配置安全管理器 -->

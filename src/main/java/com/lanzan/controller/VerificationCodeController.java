@@ -34,7 +34,7 @@ public class VerificationCodeController {
         int phone=judgeWhetherExistService.getPhoneYesNo(vc_phone);
         if (vc_phone!=null && vc_code!=null && phone>0){
             String code=verificationCodeService.getphonenewcode(vc_phone);
-            if (code.equals(vc_code)){
+            /*if (code.equals(vc_code)){
                 //验证码正确
                 map.put("res","true");
                 return map;
@@ -42,7 +42,8 @@ public class VerificationCodeController {
                 //验证码错误
                 map.put("res","false");
                 return map;
-            }
+            }*/
+            return isCode(code,vc_code);
         }else{
             return null;
         }
@@ -62,7 +63,7 @@ public class VerificationCodeController {
         int phone=judgeWhetherExistService.getPhoneYesNo(regPhone);
         if (regPhone!=null && regCode!=null && phone>0){
             String code=verificationCodeService.getRegPhoneEnEwCode(regPhone);
-            if (code.equals(regCode)){
+            /*if (code.equals(regCode)){
                 //验证码正确
                 map.put("res","true");
                 return map;
@@ -70,10 +71,24 @@ public class VerificationCodeController {
                 //验证码错误
                 map.put("res","false");
                 return map;
-            }
+            }*/
+            return isCode(code,regCode);
         }else{
             return null;
         }
+    }
+
+    //判断验证码是否正确
+    private Map<String,Object> isCode(String code,String regCode){
+        Map<String,Object> map=new HashMap<String,Object>();
+        if (code.equals(regCode)){
+            //验证码正确
+            map.put("res","true");
+        }else {
+            //验证码错误
+            map.put("res","false");
+        }
+        return map;
     }
 
 }
