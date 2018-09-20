@@ -8,10 +8,10 @@
     <insert id="addRegInfo" parameterType="com.lanzan.entity.RegInfo">
         INSERT INTO reginfo(ri_uname,ri_upass,ri_uiname,ri_uiphoto,ri_uiemail,ri_uiphone,
                             ri_uicity,ri_urprincipal,ri_urfullname,ri_urabbreviation,
-                            ri_uraddress,ri_urlogo,ri_urlicense,ri_urtype)
+                            ri_uraddress,ri_urlogo,ri_urlicense,ri_urtype,ri_auditState)
             VALUES(#{ri_uname},#{ri_upass},#{ri_uiname},#{ri_uiphoto},#{ri_uiemail},#{ri_uiphone},
             #{ri_uicity},#{ri_urprincipal},#{ri_urfullname},#{ri_urabbreviation},#{ri_uraddress},
-            #{ri_urlogo},#{ri_urlicense},#{ri_urtype})
+            #{ri_urlogo},#{ri_urlicense},#{ri_urtype},#{ri_auditState})
     </insert>
 
     <!-- 用户添加 -->
@@ -28,8 +28,13 @@
 
     <!-- 组织信息添加 -->
     <insert id="addUserRegister" parameterType="com.lanzan.entity.UserRegister">
-        INSERT INTO userinfo(uid,ur_principal,ur_fullname,ur_abbreviation,ur_address,ur_logo,ur_license,ur_type)
+        INSERT INTO userregister(uid,ur_principal,ur_fullname,ur_abbreviation,ur_address,ur_logo,ur_license,ur_type)
 	        VALUES(#{uid},#{ur_principal},#{ur_fullname},#{ur_abbreviation},#{ur_address},#{ur_logo},#{ur_license},#{ur_type})
     </insert>
+
+    <!-- 删除User -->
+    <delete id="deleteUser" parameterType="com.lanzan.entity.User">
+         DELETE FROM user WHERE uname=#{uname}
+    </delete>
 
 </mapper>

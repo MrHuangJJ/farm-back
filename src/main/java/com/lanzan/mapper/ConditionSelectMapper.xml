@@ -9,4 +9,24 @@
         SELECT uid FROM user WHERE uname=#{uname}
     </select>
 
+    <!-- 查询农机车牌和农机编号 -->
+    <select id="getAmNameAndId" resultType="com.lanzan.entity.AgriculturalMachinery">
+        SELECT am_id,am_licensePlate,am_grouping FROM agriculturalmachinery
+    </select>
+
+    <!-- 查询所以农机的am_SM终端号 -->
+    <select id="getAmSm" resultType="com.lanzan.entity.AgriculturalMachinery">
+        SELECT am_SN FROM agriculturalmachinery
+    </select>
+
+    <!-- 查询驾驶员姓名与驾驶员编号 -->
+    <select id="getDriverNameAndId" resultType="com.lanzan.entity.Driver">
+        SELECT did,dname FROM driver
+    </select>
+
+    <!-- 查询作业季名称与作业季编号 -->
+    <select id="getHsNameAndId" resultType="com.lanzan.entity.HomeworkSeason">
+        SELECT hs_id,hs_name FROM homeworkseason
+    </select>
+
 </mapper>

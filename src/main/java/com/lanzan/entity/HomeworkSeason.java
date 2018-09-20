@@ -8,7 +8,7 @@ public class HomeworkSeason {
 
     // 作业季编号
     private int hs_id;
-    // 作业季编号
+    // 作业季名称
     private String hs_name;
     // 分组名称
     private String hs_grouping;

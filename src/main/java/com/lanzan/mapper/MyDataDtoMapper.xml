@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanzan.dao.MyDataDtoMapper">
+
+    <!-- 根据uid查询个人资料 -->
+    <select id="listMyDataDto" resultType="com.lanzan.dto.MyDataDto" parameterType="int">
+        SELECT a.uid,a.ui_name,a.ui_photo,a.ui_email,a.ui_phone,a.ui_city,
+			 b.ur_principal,b.ur_fullname,b.ur_abbreviation,b.ur_address,
+			 b.ur_logo,b.ur_license,b.ur_type FROM userinfo as a
+            LEFT JOIN userregister as b on a.uid=b.uid WHERE a.uid=#{uid}
+    </select>
+
+    <!-- 根据uid修改个人资料 -->
+    <update id="updateUserInfoDto" parameterType="com.lanzan.entity.UserInfo">
+        UPDATE userinfo SET ui_name=#{ui_name},ui_photo=#{ui_photo},ui_email=#{ui_email},
+                            ui_phone=#{ui_phone},ui_city=#{ui_city} WHERE uid=#{uid}
+    </update>
+
+    <!-- 根据uid修改组织资料 -->
+    <update id="updateUserRegisterDto" parameterType="com.lanzan.entity.UserRegister">
+        UPDATE userregister SET
+			 ur_principal=#{ur_principal},ur_fullname=#{ur_fullname},ur_abbreviation=#{ur_abbreviation},
+			 ur_address=#{ur_address},ur_logo=#{ur_logo},ur_license=#{ur_license},ur_type=#{ur_type}
+			 WHERE uid=#{uid}
+    </update>
+
+</mapper>

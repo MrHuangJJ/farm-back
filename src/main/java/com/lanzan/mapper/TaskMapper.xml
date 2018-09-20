@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanzan.dao.TaskMapper">
+
+    <!-- 添加任务作业 -->
+    <insert id="addTask" parameterType="com.lanzan.entity.Task">
+        INSERT INTO task(hs_id,ttype,am_id,did,tbeginTime,tendTime,tarea,tbreadth,taverage,taddress,tscope,tgrouping,tmachineryType,tauditState)
+		    VALUES (#{hs_id},#{ttype},#{am_id},#{did},#{tbeginTime},#{tendTime},#{tarea},#{tbreadth},#{taverage},#{taddress},#{tscope},#{tgrouping},#{tmachineryType},#{tauditState})
+    </insert>
+
+    <!-- 任务删除 -->
+    <delete id="deleteTask" parameterType="int">
+        DELETE FROM task WHERE tid=#{tid}
+    </delete>
+
+    <!-- 任务查询 -->
+    <select id="listTaskDto" resultType="com.lanzan.dto.TaskDto">
+        SELECT task.*,agriculturalmachinery.am_id,agriculturalmachinery.am_licensePlate,agriculturalmachinery.am_SN,
+        driver.did,driver.dname,homeworkseason.hs_id,homeworkseason.hs_name FROM task,agriculturalmachinery,driver,homeworkseason
+        WHERE task.am_id=agriculturalmachinery.am_id AND task.did=driver.did AND task.hs_id=homeworkseason.hs_id
+            <if test=" tGrouping!=null and  tGrouping!='' ">
+                AND tgrouping LIKE concat(concat('%',#{tGrouping}),'%')
+            </if>
+            <if test=" am_SN!=null and  am_SN!='' ">
+                AND am_SN LIKE concat(concat('%',#{am_SN}),'%')
+            </if>
+            <if test=" am_licensePlate!=null and  am_licensePlate!='' ">
+                AND am_licensePlate LIKE concat(concat('%',#{am_licensePlate}),'%')
+            </if>
+            <if test=" dName!=null and  dName!='' ">
+                AND dname LIKE concat(concat('%',#{dName}),'%')
+            </if>
+            <if test=" tType!=null and  tType!='' ">
+                AND ttype LIKE concat(concat('%',#{tType}),'%')
+            </if>
+            <if test=" tAverage!=null and  tAverage!='' ">
+                AND taverage LIKE concat(concat('%',#{tAverage}),'%')
+            </if>
+            <if test=" tMachineryType!=null and  tMachineryType!='' ">
+                AND tmachineryType LIKE concat(concat('%',#{tMachineryType}),'%')
+            </if>
+            <if test=" tAuditState!=null and  tAuditState!='' ">
+                AND tauditState LIKE concat(concat('%',#{tAuditState}),'%')
+            </if>
+            <if test=" tBeginTime!=null and  tBeginTime!='' ">
+                AND DATE_FORMAT(tbeginTime,'%Y-%m-%d') &gt;= #{tBeginTime}
+            </if>
+            <if test=" tendTime!=null and  tendTime!='' ">
+                AND DATE_FORMAT(tendTime,'%Y-%m-%d') &lt;= #{tendTime}
+            </if>
+        order by tid desc limit #{pageNum},#{pageSize}
+    </select>
+    <!-- 尾页 -->
+    <select id="endPageListTaskDto" resultType="int" parameterType="int">
+        SELECT COUNT(*) FROM task,agriculturalmachinery,driver,homeworkseason WHERE
+          task.am_id=agriculturalmachinery.am_id AND task.did=driver.did AND task.hs_id=homeworkseason.hs_id
+            <if test=" tGrouping!=null and  tGrouping!='' ">
+                AND tgrouping LIKE concat(concat('%',#{tGrouping}),'%')
+            </if>
+            <if test=" am_SN!=null and  am_SN!='' ">
+                AND am_SN LIKE concat(concat('%',#{am_SN}),'%')
+            </if>
+            <if test=" am_licensePlate!=null and  am_licensePlate!='' ">
+                AND am_licensePlate LIKE concat(concat('%',#{am_licensePlate}),'%')
+            </if>
+            <if test=" dName!=null and  dName!='' ">
+                AND dname LIKE concat(concat('%',#{dName}),'%')
+            </if>
+            <if test=" tType!=null and  tType!='' ">
+                AND ttype LIKE concat(concat('%',#{tType}),'%')
+            </if>
+            <if test=" tAverage!=null and  tAverage!='' ">
+                AND taverage LIKE concat(concat('%',#{tAverage}),'%')
+            </if>
+            <if test=" tMachineryType!=null and  tMachineryType!='' ">
+                AND tmachineryType LIKE concat(concat('%',#{tMachineryType}),'%')
+            </if>
+            <if test=" tAuditState!=null and  tAuditState!='' ">
+                AND tauditState LIKE concat(concat('%',#{tAuditState}),'%')
+            </if>
+            <if test=" tBeginTime!=null and  tBeginTime!='' ">
+                AND DATE_FORMAT(tbeginTime,'%Y-%m-%d') &gt;= #{tBeginTime}
+            </if>
+            <if test=" tendTime!=null and  tendTime!='' ">
+                AND DATE_FORMAT(tendTime,'%Y-%m-%d') &lt;= #{tendTime}
+            </if>
+          order by tid desc
+    </select>
+
+
+</mapper>

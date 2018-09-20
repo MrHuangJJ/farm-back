@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanzan.dao.HomeworkSeasonMapper">
+
+    <!-- 添加作业季 -->
+    <insert id="addHomeworkSeason" parameterType="com.lanzan.entity.HomeworkSeason">
+        INSERT INTO homeworkseason(hs_name,hs_grouping,hs_type,hs_beginTime,hs_endTime)
+		    VALUES (#{hs_name},#{hs_grouping},#{hs_type},#{hs_beginTime},#{hs_endTime})
+    </insert>
+
+    <!-- 删除作业季 -->
+    <delete id="deleteHomeworkSeason" parameterType="com.lanzan.entity.HomeworkSeason">
+        DELETE FROM homeworkseason WHERE hs_id=#{hs_id}
+    </delete>
+
+    <!-- 查询作业季 -->
+    <select id="listHomeworkSeason" resultType="com.lanzan.entity.HomeworkSeason">
+        SELECT hs_id,hs_name,hs_grouping,hs_type,hs_beginTime,hs_endTime FROM homeworkseason
+            <where>
+                <if test=" hs_grouping!=null and  hs_grouping!='' ">
+                    hs_grouping LIKE concat(concat('%',#{hs_grouping}),'%')
+                </if>
+                <if test=" hs_type!=null and  hs_type!='' ">
+                    AND hs_type LIKE concat(concat('%',#{hs_type}),'%')
+                </if>
+                <if test=" hs_beginTime!=null and  hs_beginTime!='' ">
+                    AND DATE_FORMAT(hs_beginTime,'%Y-%m-%d') &gt;= #{hs_beginTime}
+                </if>
+                <if test=" hs_endTime!=null and  hs_endTime!='' ">
+                    AND DATE_FORMAT(hs_endTime,'%Y-%m-%d') &lt;= #{hs_endTime}
+                </if>
+            </where>
+        order by hs_id desc limit #{pageNum},#{pageSize}
+    </select>
+    <!-- 尾页 -->
+    <select id="endPageListHomeworkSeason" resultType="int">
+        SELECT COUNT(*) FROM homeworkseason
+            <where>
+                <if test=" hs_grouping!=null and  hs_grouping!='' ">
+                    hs_grouping LIKE concat(concat('%',#{hs_grouping}),'%')
+                </if>
+                <if test=" hs_type!=null and  hs_type!='' ">
+                    AND hs_type LIKE concat(concat('%',#{hs_type}),'%')
+                </if>
+                <if test=" hs_beginTime!=null and  hs_beginTime!='' ">
+                    AND DATE_FORMAT(hs_beginTime,'%Y-%m-%d') &gt;= #{hs_beginTime}
+                </if>
+                <if test=" hs_endTime!=null and  hs_endTime!='' ">
+                    AND DATE_FORMAT(hs_endTime,'%Y-%m-%d') &lt;= #{hs_endTime}
+                </if>
+            </where>
+        order by hs_id desc
+    </select>
+
+    <!-- 修改作业季 -->
+    <update id="updateHomeworkSeason" parameterType="com.lanzan.entity.HomeworkSeason">
+        UPDATE homeworkseason set hs_name=#{hs_name},hs_grouping=#{hs_grouping},hs_type=#{hs_type},hs_beginTime=#{hs_beginTime},hs_endTime=#{hs_endTime} WHERE hs_id=#{hs_id}
+    </update>
+
+</mapper>

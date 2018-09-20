@@ -35,5 +35,10 @@ public class RegServiceImp implements RegService{
         regMapper.addUserRegister(userregister);
     }
 
+    //  删除User
+    public void deleteUser(User user) {
+        regMapper.deleteUser(user);
+    }
+
 
 }

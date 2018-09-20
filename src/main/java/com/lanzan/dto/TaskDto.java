@@ -1,10 +1,6 @@
-package com.lanzan.entity;
+package com.lanzan.dto;
 
-/**
- *
- * 任务
- */
-public class Task {
+public class TaskDto {
 
     // 任务编号
     private int tid;
@@ -46,12 +42,19 @@ public class Task {
     private String tscope;
     // 所属用户编号
     private int uid;
+    // 农机车牌
+    private String am_licensePlate;
+    // 终端编号
+    private String am_SN;
+    // 机手姓名
+    private String dname;
+    // 作业季名称
+    private String hs_name;
 
-
-    public Task() {
+    public TaskDto() {
     }
 
-    public Task(int tid, String tarea, String taverage, String tfpy, String tgrouping, int did, int am_id, String ttype, String tauditState, String treportedWay, String tauditWay, String tauditCause, String tbeginTime, String tendTime, int hs_id, String tmachineryType, String taddress, Double tbreadth, String tscope, int uid) {
+    public TaskDto(int tid, String tarea, String taverage, String tfpy, String tgrouping, int did, int am_id, String ttype, String tauditState, String treportedWay, String tauditWay, String tauditCause, String tbeginTime, String tendTime, int hs_id, String tmachineryType, String taddress, Double tbreadth, String tscope, int uid, String am_licensePlate, String am_SN, String dname, String hs_name) {
         this.tid = tid;
         this.tarea = tarea;
         this.taverage = taverage;
@@ -72,6 +75,10 @@ public class Task {
         this.tbreadth = tbreadth;
         this.tscope = tscope;
         this.uid = uid;
+        this.am_licensePlate = am_licensePlate;
+        this.am_SN = am_SN;
+        this.dname = dname;
+        this.hs_name = hs_name;
     }
 
     public int getTid() {
@@ -232,5 +239,37 @@ public class Task {
 
     public void setUid(int uid) {
         this.uid = uid;
+    }
+
+    public String getAm_licensePlate() {
+        return am_licensePlate;
+    }
+
+    public void setAm_licensePlate(String am_licensePlate) {
+        this.am_licensePlate = am_licensePlate;
+    }
+
+    public String getAm_SN() {
+        return am_SN;
+    }
+
+    public void setAm_SN(String am_SN) {
+        this.am_SN = am_SN;
+    }
+
+    public String getDname() {
+        return dname;
+    }
+
+    public void setDname(String dname) {
+        this.dname = dname;
+    }
+
+    public String getHs_name() {
+        return hs_name;
+    }
+
+    public void setHs_name(String hs_name) {
+        this.hs_name = hs_name;
     }
 }

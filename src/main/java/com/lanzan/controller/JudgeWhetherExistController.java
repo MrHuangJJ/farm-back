@@ -6,6 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Controller
 public class JudgeWhetherExistController {
 
@@ -19,18 +22,19 @@ public class JudgeWhetherExistController {
      */
     @RequestMapping(value = "getJudgeUnameWhetherExist")
     @ResponseBody
-    public String getpwdphone(String uname){
+    public Map<String,Object> getpwdphone(String uname){
+        Map<String,Object> map=new HashMap<String,Object>();
         if (uname!=null && uname!=""){
             int getName=judgeWhetherExistService.getunameyesno(uname);
-            String getNameExist="";
             if (getName>0){
                 //存在
-                getNameExist="true";
+                map.put("res","true");
+                return map;
             }else{
                 //不存在
-                getNameExist="false";
+                map.put("res","false");
+                return map;
             }
-            return getNameExist;
         }else{
             return null;
         }
@@ -43,18 +47,18 @@ public class JudgeWhetherExistController {
      */
     @RequestMapping(value = "getJudgePhoneWhetherExist")
     @ResponseBody
-    public String getPhoneYesNo(String phone){
+    public Map<String,Object> getPhoneYesNo(String phone){
+        Map<String,Object> map=new HashMap<String,Object>();
         if (phone!=null && phone!=""){
             int getPhone=judgeWhetherExistService.getPhoneYesNo(phone);
-            String getPhoneExist="";
             if (getPhone>0){
-                //存在
-                getPhoneExist="true";
+                map.put("res","true");
+                return map;
             }else{
                 //不存在
-                getPhoneExist="false";
+                map.put("res","false");
+                return map;
             }
-            return getPhoneExist;
         }else{
             return null;
         }
@@ -67,18 +71,18 @@ public class JudgeWhetherExistController {
      */
     @RequestMapping(value = "getJudgeEmailWhetherExist")
     @ResponseBody
-    public String getEmailYesNo(String email){
+    public Map<String,Object> getEmailYesNo(String email){
+        Map<String,Object> map=new HashMap<String,Object>();
         if (email!=null && email!=""){
             int getEmail=judgeWhetherExistService.getEmailYesNo(email);
-            String getEmailExist="";
             if (getEmail>0){
-                //存在
-                getEmailExist="true";
+                map.put("res","true");
+                return map;
             }else{
                 //不存在
-                getEmailExist="false";
+                map.put("res","false");
+                return map;
             }
-            return getEmailExist;
         }else{
             return null;
         }

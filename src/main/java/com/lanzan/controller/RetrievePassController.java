@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 @Controller
@@ -33,7 +35,8 @@ public class RetrievePassController {
      */
     @RequestMapping(value = "getVerificationCode")
     @ResponseBody
-    public String getVerificationCode(String uname,String uiphone)throws Exception{
+    public Map<String,Object> getVerificationCode(String uname, String uiphone)throws Exception{
+        Map<String,Object> map=new HashMap<String,Object>();
         //根据uname获取uid
         int uid=conditionSelectService.unamegetuid(uname);
         //根据获取的uid和uiphone判断手机号是否存在
@@ -60,9 +63,9 @@ public class RetrievePassController {
             verificationCodeService.addVerificationCode(verificationCode);
         }else{
             //不存在
-            getuiphoneAccordance="false";
+            map.put("res","false");
         }
-        return getuiphoneAccordance;
+        return map;
     }
 
     /**
@@ -72,12 +75,15 @@ public class RetrievePassController {
      */
     @RequestMapping(value = "updatePassInuname")
     @ResponseBody
-    public String updatePassInuname(User user){
+    public Map<String,Object> updatePassInuname(User user){
+        Map<String,Object> map=new HashMap<String,Object>();
         if (user.getUname()!=null && user.getUname()!="" && user.getUpass()!=null && user.getUpass()!=""){
             retrievePassService.updatePassInuname(user);
-            return "login";
+            map.put("res","true");
+            return map;
         }else {
-            return null;
+            map.put("res","false");
+            return map;
         }
     }
 

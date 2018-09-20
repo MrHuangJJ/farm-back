@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanzan.dao.UserAudit">
+
+    <!-- 查询注册用户 -->
+    <select id="listRegInfo" resultType="com.lanzan.entity.RegInfo">
+        SELECT ri_uid,ri_uname,ri_uiname,ri_uiphoto,ri_uiemail,ri_uiphone,
+               ri_uicity,ri_urprincipal,ri_urfullname,ri_urabbreviation,
+               ri_uraddress,ri_urlogo,ri_urlicense,ri_urtype,ri_auditState FROM reginfo
+                  order by ri_uid desc limit #{pageNum},#{pageSize}
+    </select>
+    <!-- 尾页 -->
+    <select id="endPageListRegInfo" resultType="int">
+        SELECT COUNT(*) FROM reginfo
+            order by ri_uid desc
+    </select>
+
+    <!-- 审核用户通过审核 -->
+    <update id="updateAuditState" parameterType="com.lanzan.entity.RegInfo">
+        UPDATE reginfo SET ri_auditState=#{ri_auditState} WHERE ri_uid=#{ri_uid}
+    </update>
+
+    <!-- 删除用户 -->
+    <delete id="deleteAuditState" parameterType="com.lanzan.entity.RegInfo">
+        DELETE FROM reginfo WHERE ri_uname=#{ri_uname}
+    </delete>
+
+</mapper>

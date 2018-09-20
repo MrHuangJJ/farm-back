@@ -162,7 +162,7 @@ public class CarsController{
      * 实时位置数据添加
      *
      */
-    @Scheduled(cron = "0/5 * * * * ?")//每隔5秒执行一次
+    //@Scheduled(cron = "0/4 * * * * ?")//每隔4秒执行一次
     public void addRealTime() {
         //登录的地址以及登录操作参数
         String loginUrl = "http://www.tbitgps.com/accountAction!login.do";

@@ -9,4 +9,9 @@
         SELECT uid,uname,upass FROM user WHERE uname=#{uname}
     </select>
 
+    <!-- 根据uid获取头像与昵称 -->
+    <select id="getPhotoAndName" parameterType="int" resultType="com.lanzan.entity.UserInfo">
+        SELECT ui_photo,ui_name FROM userinfo WHERE uid=#{uid}
+    </select>
+
 </mapper>

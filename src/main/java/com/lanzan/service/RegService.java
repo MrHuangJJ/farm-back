@@ -23,5 +23,8 @@ public interface RegService {
     // 添加组织信息
     void addUserRegister(UserRegister userregister);
 
+    // 删除User
+    void deleteUser(User user);
+
 
 }

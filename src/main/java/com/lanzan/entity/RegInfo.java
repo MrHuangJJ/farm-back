@@ -36,11 +36,13 @@ public class RegInfo {
     private String ri_urlicense;
     // 组织类型
     private String ri_urtype;
+    //审核状态
+    private String ri_auditState;
 
     public RegInfo() {
     }
 
-    public RegInfo(int ri_uid, String ri_uname, String ri_upass, String ri_uiname, String ri_uiphoto, String ri_uiemail, String ri_uiphone, String ri_uicity, String ri_urprincipal, String ri_urfullname, String ri_urabbreviation, String ri_uraddress, String ri_urlogo, String ri_urlicense, String ri_urtype) {
+    public RegInfo(int ri_uid, String ri_uname, String ri_upass, String ri_uiname, String ri_uiphoto, String ri_uiemail, String ri_uiphone, String ri_uicity, String ri_urprincipal, String ri_urfullname, String ri_urabbreviation, String ri_uraddress, String ri_urlogo, String ri_urlicense, String ri_urtype, String ri_auditState) {
         this.ri_uid = ri_uid;
         this.ri_uname = ri_uname;
         this.ri_upass = ri_upass;
@@ -56,6 +58,7 @@ public class RegInfo {
         this.ri_urlogo = ri_urlogo;
         this.ri_urlicense = ri_urlicense;
         this.ri_urtype = ri_urtype;
+        this.ri_auditState = ri_auditState;
     }
 
     public int getRi_uid() {
@@ -178,4 +181,11 @@ public class RegInfo {
         this.ri_urtype = ri_urtype;
     }
 
+    public String getRi_auditState() {
+        return ri_auditState;
+    }
+
+    public void setRi_auditState(String ri_auditState) {
+        this.ri_auditState = ri_auditState;
+    }
 }

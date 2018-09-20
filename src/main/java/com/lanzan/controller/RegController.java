@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 @Controller
@@ -62,15 +64,19 @@ public class RegController {
      */
     @RequestMapping(value = "addRegInfo",method = RequestMethod.POST)
     @ResponseBody
-    public String addRegInfo(RegInfo regInfo){
+    public Map<String,Object> addRegInfo(RegInfo regInfo){
+        Map<String,Object> map=new HashMap<String,Object>();
         if (regInfo.getRi_uname()!=null && regInfo.getRi_uname()!=""
                 && regInfo.getRi_upass()!=null && regInfo.getRi_upass()!=""
                 && regInfo.getRi_uiphoto()!=null && regInfo.getRi_uiphoto()!=""
                 && regInfo.getRi_urtype()!=null && regInfo.getRi_urtype()!=""){
+            regInfo.setRi_auditState("待审核");
             regService.addRegInfo(regInfo);
-            return "login";
+            map.put("res","true");
+            return map;
         }else {
-            return null;
+            map.put("res","false");
+            return map;
         }
     }
 
