@@ -83,7 +83,7 @@ public class UserAuditController {
             userRegister.setUr_license(regInfo.getRi_urlicense());
             userRegister.setUr_logo(regInfo.getRi_urlogo());
             userRegister.setUr_principal(regInfo.getRi_urprincipal());
-            userRegister.setUr_type(regInfo.getRi_urtype());
+            userRegister.setUr_type(Integer.parseInt(regInfo.getRi_urtype()));
             int s=judgeWhetherExistService.getunameyesno(regInfo.getRi_uname());
             if (s>0){
                 map.put("res","false");

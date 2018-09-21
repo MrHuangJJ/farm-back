@@ -1,6 +1,7 @@
 package com.lanzan.service;
 
 import com.lanzan.entity.AgriculturalMachinery;
+import com.lanzan.entity.UserRegister;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -35,5 +36,8 @@ public interface AgriculturalMachineryService {
 
     // 根据am_SM修改农机状态
     void updateAmState(String am_state,String carId);
+
+    //查询用户所属的农机
+    List<AgriculturalMachinery> getAgriculturalMachinery(int uid);
 
 }

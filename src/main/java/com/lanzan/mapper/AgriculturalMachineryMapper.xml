@@ -58,4 +58,9 @@
         UPDATE agriculturalmachinery SET am_state=#{am_state} WHERE am_SN=(SELECT carNo FROM cars WHERE carId=#{carId})
     </update>
 
+    <!--根据用户id查询农机-->
+    <select id="getAgriculturalMachinery" resultType="AgriculturalMachinery" parameterType="int">
+        SELECT * FROM agriculturalmachinery WHERE uid=#{uid}
+    </select>
+
 </mapper>

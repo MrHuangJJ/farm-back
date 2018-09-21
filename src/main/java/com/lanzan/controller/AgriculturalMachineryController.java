@@ -1,6 +1,7 @@
 package com.lanzan.controller;
 
 import com.lanzan.entity.AgriculturalMachinery;
+import com.lanzan.entity.UserRegister;
 import com.lanzan.service.AgriculturalMachineryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -104,6 +105,12 @@ public class AgriculturalMachineryController {
             map.put("res","false");
             return map;
         }
+    }
+
+    @RequestMapping(value = "getAgriculturalMachinerys")
+    @ResponseBody
+    public List<AgriculturalMachinery> getAgriculturalMachinerys(int uid){
+        return agriculturalMachineryService.getAgriculturalMachinery(uid);
     }
 
 

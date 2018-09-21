@@ -35,4 +35,7 @@ public interface AgriculturalMachineryMapper {
     // 根据am_SM修改农机状态
     void updateAmState(String am_state,String carId);
 
+    //根据用户id查询农机
+    List<AgriculturalMachinery> getAgriculturalMachinery(int uid);
+
 }

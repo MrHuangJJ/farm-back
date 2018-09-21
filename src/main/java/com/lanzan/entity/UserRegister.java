@@ -21,12 +21,14 @@ public class UserRegister {
     // 组织执照/介绍信
     private String ur_license;
     //组织类型
-    private String ur_type;
+    private int ur_type;
+    //所属id
+    private int ur_parent;
 
     public UserRegister() {
     }
 
-    public UserRegister(int uid, String ur_principal, String ur_fullname, String ur_abbreviation, String ur_address, String ur_logo, String ur_license, String ur_type) {
+    public UserRegister(int uid, String ur_principal, String ur_fullname, String ur_abbreviation, String ur_address, String ur_logo, String ur_license, int ur_type) {
         this.uid = uid;
         this.ur_principal = ur_principal;
         this.ur_fullname = ur_fullname;
@@ -93,11 +95,19 @@ public class UserRegister {
         this.ur_license = ur_license;
     }
 
-    public String getUr_type() {
+    public int getUr_type() {
         return ur_type;
     }
 
-    public void setUr_type(String ur_type) {
+    public void setUr_type(int ur_type) {
         this.ur_type = ur_type;
+    }
+
+    public int getUr_parent() {
+        return ur_parent;
+    }
+
+    public void setUr_parent(int ur_parent) {
+        this.ur_parent = ur_parent;
     }
 }
