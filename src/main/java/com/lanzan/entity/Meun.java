@@ -17,14 +17,14 @@ public class Meun {
     // 菜单展开状态
     private String mstate;
     // 菜单等级
-    private String mgrade;
+    private int mgrade;
     // 菜单父编号
-    private String mparent;
+    private int mparent;
 
     public Meun() {
     }
 
-    public Meun(int mid, String mname, String micon, String murl, String mstate, String mgrade, String mparent) {
+    public Meun(int mid, String mname, String micon, String murl, String mstate, int mgrade, int mparent) {
         this.mid = mid;
         this.mname = mname;
         this.micon = micon;
@@ -74,19 +74,19 @@ public class Meun {
         this.mstate = mstate;
     }
 
-    public String getMgrade() {
+    public int getMgrade() {
         return mgrade;
     }
 
-    public void setMgrade(String mgrade) {
+    public void setMgrade(int mgrade) {
         this.mgrade = mgrade;
     }
 
-    public String getMparent() {
+    public int getMparent() {
         return mparent;
     }
 
-    public void setMparent(String mparent) {
+    public void setMparent(int mparent) {
         this.mparent = mparent;
     }
 }
