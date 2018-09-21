@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanzan.dao.MapMapper">
+
+    <!-- 查询在线农机 -->
+    <select id="getOnLineAm" resultType="com.lanzan.entity.AgriculturalMachinery">
+        SELECT * FROM agriculturalmachinery WHERE am_state='在线'
+    </select>
+
+    <!-- 查询离线农机 -->
+    <select id="getOffLineAm" resultType="com.lanzan.entity.AgriculturalMachinery">
+        SELECT * FROM agriculturalmachinery WHERE am_state='离线'
+    </select>
+
+    <!-- 根据分组查询农机 -->
+    <select id="getGroupingAm" resultType="com.lanzan.entity.AgriculturalMachinery" parameterType="String">
+        SELECT * FROM agriculturalmachinery WHERE am_grouping LIKE "%"#{am_grouping}"%"
+    </select>
+
+</mapper>

@@ -4,6 +4,10 @@ import com.lanzan.entity.ElectronicFence;
 
 import java.util.List;
 
+/**
+ *
+ * 电子围栏
+ */
 public interface ElectronicFenceMapper {
 
     // 添加电子围栏

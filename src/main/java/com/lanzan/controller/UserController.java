@@ -2,6 +2,7 @@ package com.lanzan.controller;
 
 import com.lanzan.entity.User;
 import com.lanzan.entity.UserInfo;
+import com.lanzan.dto.UserDto;
 import com.lanzan.service.UserService;
 import com.lanzan.util.ResultUtil;
 import org.apache.shiro.SecurityUtils;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
@@ -34,33 +36,27 @@ public class UserController {
      */
     @RequestMapping(value = "login", method = RequestMethod.POST)
     @ResponseBody
-    public String login(User user){
-        System.out.println("进入");
+    public Map<String,Object> login(User user,HttpServletRequest request){
         Subject subject= SecurityUtils.getSubject();
         UsernamePasswordToken token=new UsernamePasswordToken(user.getUname(), user.getUpass());
-            /*try {
-                subject.login(token);
-                return "index";
-            } catch (Exception ice) {
-                ice.printStackTrace();
-                System.out.println("账号/密码不匹配！");
-                return "login";
-            }*/
+        Map<String,Object> map=new HashMap<String,Object>();
         try {
             //调取shiro框架的验证
             subject.login(token);
-            return "login";
+            map.put("res","true");
         }catch (UnknownAccountException e){
-            System.out.println("用户不存在或错误");
-            return "UnknownAccountException";
+            map.put("res","用户不存在或错误");
         }catch (IncorrectCredentialsException ex){
-            System.out.println("用户不存在或错误");
-            return "IncorrectCredentialsException";
+            map.put("res","用户不存在或错误");
         }catch (Exception e){
-            System.out.println("内部错误，请重试");
+            map.put("res","其他错误");
             e.printStackTrace();
-            return "Exception";
         }
+        //登陆成功,拿取用户的相应的信息
+        UserDto userDto = userService.getUserDto(user.getUname());
+        //将用户信息存储到session
+        request.getSession().setAttribute("userDto",userDto);
+        return map;
     }
 
     /**

@@ -5,6 +5,7 @@ import com.lanzan.entity.RealTime;
 import com.lanzan.service.CarsService;
 import com.lanzan.service.RealTimeService;
 import com.lanzan.service.JudgeWhetherExistService;
+import com.lanzan.service.AgriculturalMachineryService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.http.NameValuePair;
@@ -34,6 +35,8 @@ public class CarsController{
     private RealTimeService realTimeService;
     @Autowired
     private JudgeWhetherExistService judgeWhetherExistService;
+    @Autowired
+    private AgriculturalMachineryService agriculturalMachineryService;
 
     /**
      * 如果用的是同一个HttpClient且没去手动连接放掉client.getConnectionManager().shutdown();
@@ -141,7 +144,7 @@ public class CarsController{
                         cars.setServiceStatus((Integer) row.get("serviceStatus"));
                         cars.setServiceTime((String) row.get("serviceTime"));
                         cars.setTeamId((Integer) row.get("teamId"));
-                        int car=judgeWhetherExistService.getCarIdYesNo((String) row.get("carId"));
+                        int car=judgeWhetherExistService.getCarIdYesNo(row.get("carId").toString());
                         if (car>0){
                             //存在 不做操作
                             System.out.println("car==="+car);
@@ -162,7 +165,7 @@ public class CarsController{
      * 实时位置数据添加
      *
      */
-    //@Scheduled(cron = "0/4 * * * * ?")//每隔4秒执行一次
+    //@Scheduled(cron = "0/10 * * * * ?")//每隔4秒执行一次
     public void addRealTime() {
         //登录的地址以及登录操作参数
         String loginUrl = "http://www.tbitgps.com/accountAction!login.do";
@@ -171,9 +174,15 @@ public class CarsController{
         loginParams.add(new BasicNameValuePair("type","2"));
         loginParams.add(new BasicNameValuePair("name", "31017"));
         loginParams.add(new BasicNameValuePair("password", "sh123456"));
+
         //获取车辆信息位置
         String catUrl = "http://www.tbitgps.com/carAction!getPositionByID.do";
         List<NameValuePair> catParams = new ArrayList<NameValuePair>();
+
+        // 根据车辆编号获取在线状态
+        String carStateUrl="http://www.tbitgps.com/carAction!getOnLineByCarID.do";
+        List<NameValuePair> carStateParams = new ArrayList<NameValuePair>();
+
         StringBuilder str=new StringBuilder();
         List<Cars> cars=carsService.listCarId();
         for (int i = 0; i < cars.size(); i++) {
@@ -186,11 +195,13 @@ public class CarsController{
         }
         System.out.println(str);
         catParams.add(new BasicNameValuePair("carId",str+","));
+        carStateParams.add(new BasicNameValuePair("carId",str+","));
+
 
         Map<String,List<NameValuePair>> map = new HashMap<String,List<NameValuePair>>();
         map.put(catUrl,catParams);
         Map<String,String> returnMap = doPostWithOneHttpclient(loginUrl, loginParams, map);
-
+        System.out.println(returnMap.values());
         //接收jsonArray数据
         JSONArray jsonArray = JSONArray.fromObject(returnMap.values());
         for (int i = 0; i < jsonArray.size(); i++) {
@@ -223,6 +234,31 @@ public class CarsController{
                     }else {
                         //不在线不做操作
                         System.out.println("设备不在线");
+                    }
+                }
+            }
+
+        }
+        // 接收车辆状态数据
+        Map<String,List<NameValuePair>> stateMap = new HashMap<String,List<NameValuePair>>();
+        stateMap.put(carStateUrl,carStateParams);
+        Map<String,String> returnStateMap = doPostWithOneHttpclient(loginUrl, loginParams, stateMap);
+        System.out.println(returnStateMap.values());
+        JSONArray catStateJsonArray = JSONArray.fromObject(returnStateMap.values());
+        for (int i = 0; i < catStateJsonArray.size(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            JSONArray json=jsonObject.getJSONArray("result");
+            if (json!=null && json.size()>0){
+                JSONObject row = null;
+                for (int j = 0; j < json.size(); j++) {
+                    row = json.getJSONObject(j);
+                    if (row.get("online").equals(true)){
+                        //车辆在线
+                        System.out.println("进入");
+                        agriculturalMachineryService.updateAmState("在线",row.get("carId").toString());
+                    }else {
+                        //不在线
+                        agriculturalMachineryService.updateAmState("离线",row.get("carId").toString());
                     }
                 }
             }

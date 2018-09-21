@@ -23,18 +23,9 @@ public class JudgeWhetherExistController {
     @RequestMapping(value = "getJudgeUnameWhetherExist")
     @ResponseBody
     public Map<String,Object> getpwdphone(String uname){
-        Map<String,Object> map=new HashMap<String,Object>();
         if (uname!=null && uname!=""){
             int getName=judgeWhetherExistService.getunameyesno(uname);
-            if (getName>0){
-                //存在
-                map.put("res","true");
-                return map;
-            }else{
-                //不存在
-                map.put("res","false");
-                return map;
-            }
+            return yesNoExist(getName);
         }else{
             return null;
         }
@@ -48,17 +39,9 @@ public class JudgeWhetherExistController {
     @RequestMapping(value = "getJudgePhoneWhetherExist")
     @ResponseBody
     public Map<String,Object> getPhoneYesNo(String phone){
-        Map<String,Object> map=new HashMap<String,Object>();
         if (phone!=null && phone!=""){
             int getPhone=judgeWhetherExistService.getPhoneYesNo(phone);
-            if (getPhone>0){
-                map.put("res","true");
-                return map;
-            }else{
-                //不存在
-                map.put("res","false");
-                return map;
-            }
+            return yesNoExist(getPhone);
         }else{
             return null;
         }
@@ -72,21 +55,25 @@ public class JudgeWhetherExistController {
     @RequestMapping(value = "getJudgeEmailWhetherExist")
     @ResponseBody
     public Map<String,Object> getEmailYesNo(String email){
-        Map<String,Object> map=new HashMap<String,Object>();
         if (email!=null && email!=""){
             int getEmail=judgeWhetherExistService.getEmailYesNo(email);
-            if (getEmail>0){
-                map.put("res","true");
-                return map;
-            }else{
-                //不存在
-                map.put("res","false");
-                return map;
-            }
+            return yesNoExist(getEmail);
         }else{
             return null;
         }
     }
 
+
+    private Map<String,Object> yesNoExist(int getNPE){
+        Map<String,Object> map=new HashMap<String,Object>();
+        if (getNPE>0){
+            // 存在
+            map.put("res","true");
+        }else {
+            // 不存在
+            map.put("res","false");
+        }
+        return map;
+    }
 
 }

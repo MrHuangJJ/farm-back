@@ -14,4 +14,9 @@
         SELECT ui_photo,ui_name FROM userinfo WHERE uid=#{uid}
     </select>
 
+    <!-- 根据登录账户获取uid与rid -->
+    <select id="getUserDto" resultType="com.lanzan.dto.UserDto" parameterType="String">
+        SELECT u.uid,ru.rid FROM user u LEFT JOIN role_user ru ON u.uid=ru.uid WHERE u.uname=#{uName}
+    </select>
+
 </mapper>

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service(value = "agriculturalMachineryService")
-public class AgriculturalMachineryServiceImp implements AgriculturalMachineryService{
+public class AgriculturalMachineryServiceImp implements AgriculturalMachineryService {
 
     @Autowired
     private AgriculturalMachineryMapper agriculturalMachineryMapper;
@@ -44,6 +44,11 @@ public class AgriculturalMachineryServiceImp implements AgriculturalMachinerySer
     // 修改农机
     public void updateAgriculturalMachinery(AgriculturalMachinery agriculturalMachinery) {
         agriculturalMachineryMapper.updateAgriculturalMachinery(agriculturalMachinery);
+    }
+
+    // 根据am_SM修改农机状态
+    public void updateAmState(String am_state, String carId) {
+        agriculturalMachineryMapper.updateAmState(am_state,carId);
     }
 
 }

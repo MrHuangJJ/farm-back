@@ -33,4 +33,7 @@ public interface AgriculturalMachineryService {
     // 修改农机
     void updateAgriculturalMachinery(AgriculturalMachinery agriculturalMachinery);
 
+    // 根据am_SM修改农机状态
+    void updateAmState(String am_state,String carId);
+
 }

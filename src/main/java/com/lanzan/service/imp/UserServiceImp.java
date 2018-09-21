@@ -1,6 +1,7 @@
 package com.lanzan.service.imp;
 
 import com.lanzan.dao.UserMapper;
+import com.lanzan.dto.UserDto;
 import com.lanzan.entity.User;
 import com.lanzan.entity.UserInfo;
 import com.lanzan.service.UserService;
@@ -23,6 +24,11 @@ public class UserServiceImp implements UserService {
     // 根据uid获取头像与昵称
     public List<UserInfo> getPhotoAndName(int uid) {
         return userMapper.getPhotoAndName(uid);
+    }
+
+    // 根据登录账户获取uid与rid
+    public UserDto getUserDto(String uName) {
+        return userMapper.getUserDto(uName);
     }
 
 
