@@ -1,6 +1,7 @@
 package com.lanzan.dao;
 
 import com.lanzan.entity.AgriculturalMachinery;
+import com.lanzan.dto.MapDto;
 
 import java.util.List;
 
@@ -19,7 +20,8 @@ public interface MapMapper {
     // 根据分组查询农机
     List<AgriculturalMachinery> getGroupingAm(String am_grouping);
 
-    // 地图农机详细信息查询
+    // 地图农机详细信息查询(根据carId查询)
+    MapDto getMapDto(String carId);
 
 
 }

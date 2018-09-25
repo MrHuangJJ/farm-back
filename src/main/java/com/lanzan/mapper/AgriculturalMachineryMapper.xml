@@ -17,10 +17,13 @@
 
     <!-- 查询农机 -->
     <select id="listAgriculturalMachinery" resultType="com.lanzan.entity.AgriculturalMachinery">
-        SELECT am_id,am_licensePlate,am_grouping,am_modelNumber,am_type,am_SN,am_SIM,am_state FROM agriculturalmachinery
+        SELECT am_id,am_licensePlate,am_grouping,am_modelNumber,am_type,am_SN,am_SIM,am_state,uid FROM agriculturalmachinery
             <where>
+                <if test="uid != 0">
+                    uid=#{uid}
+                </if>
                 <if test=" am_licensePlate!=null and  am_licensePlate!='' ">
-                    am_licensePlate LIKE concat(concat('%',#{am_licensePlate}),'%')
+                    AND am_licensePlate LIKE concat(concat('%',#{am_licensePlate}),'%')
                 </if>
                 <if test=" am_grouping!=null and  am_grouping!='' ">
                     AND am_grouping LIKE concat(concat('%',#{am_grouping}),'%')
@@ -35,8 +38,11 @@
     <select id="endPageListAgriculturalMachinery" resultType="int" parameterType="String">
         SELECT COUNT(*) FROM agriculturalmachinery
             <where>
+                <if test="uid != 0">
+                    uid=#{uid}
+                </if>
                 <if test=" am_licensePlate!=null and  am_licensePlate!='' ">
-                    am_licensePlate LIKE concat(concat('%',#{am_licensePlate}),'%')
+                    AND am_licensePlate LIKE concat(concat('%',#{am_licensePlate}),'%')
                 </if>
                 <if test=" am_grouping!=null and  am_grouping!='' ">
                     AND am_grouping LIKE concat(concat('%',#{am_grouping}),'%')

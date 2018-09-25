@@ -20,13 +20,14 @@ public interface AgriculturalMachineryService {
 
     // 查询农机
     List<AgriculturalMachinery> listAgriculturalMachinery(
+            int uid,
             @Param(value = "am_licensePlate") String am_licensePlate,
             @Param(value = "am_grouping") String am_grouping,
             @Param(value = "am_SN") String am_SN,
             @Param(value = "pageNum") int pageNum,
             @Param(value = "pageSize") int pageSize);
     // 尾页
-    int endPageListAgriculturalMachinery(@Param(value = "am_licensePlate") String am_licensePlate,
+    int endPageListAgriculturalMachinery(int uid,@Param(value = "am_licensePlate") String am_licensePlate,
                                          @Param(value = "am_grouping") String am_grouping,
                                          @Param(value = "am_SN") String am_SN);
 

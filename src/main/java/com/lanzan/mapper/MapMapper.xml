@@ -19,4 +19,18 @@
         SELECT * FROM agriculturalmachinery WHERE am_grouping LIKE "%"#{am_grouping}"%"
     </select>
 
+    <!-- 地图农机详细信息查询(根据农机编号查询) -->
+    <select id="getMapDto" resultType="com.lanzan.dto.MapDto" parameterType="String">
+        SELECT agriculturalmachinery.am_grouping,
+			   agriculturalmachinery.am_licensePlate,
+			   agriculturalmachinery.am_SN,
+			   agriculturalmachinery.am_type,
+			   agriculturalmachinery.am_state,
+               driver.dname,driver.dphone,
+			   task.ttype,task.tbreadth
+        FROM task,agriculturalmachinery,driver,cars
+        WHERE task.am_id=agriculturalmachinery.am_id AND task.did=driver.did
+                    AND cars.carNO=agriculturalmachinery.am_SN AND cars.carId=#{carId}
+    </select>
+
 </mapper>

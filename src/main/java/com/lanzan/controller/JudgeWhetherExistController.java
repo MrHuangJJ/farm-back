@@ -25,7 +25,8 @@ public class JudgeWhetherExistController {
     public Map<String,Object> getpwdphone(String uname){
         if (uname!=null && uname!=""){
             int getName=judgeWhetherExistService.getunameyesno(uname);
-            return yesNoExist(getName);
+            int getAuditName=judgeWhetherExistService.getAuditNameYesNo(uname);
+            return yesNoExist(getName,getAuditName);
         }else{
             return null;
         }
@@ -41,7 +42,8 @@ public class JudgeWhetherExistController {
     public Map<String,Object> getPhoneYesNo(String phone){
         if (phone!=null && phone!=""){
             int getPhone=judgeWhetherExistService.getPhoneYesNo(phone);
-            return yesNoExist(getPhone);
+            int getAuditPhone=judgeWhetherExistService.getAuditPhoneYesNo(phone);
+            return yesNoExist(getPhone,getAuditPhone);
         }else{
             return null;
         }
@@ -57,16 +59,17 @@ public class JudgeWhetherExistController {
     public Map<String,Object> getEmailYesNo(String email){
         if (email!=null && email!=""){
             int getEmail=judgeWhetherExistService.getEmailYesNo(email);
-            return yesNoExist(getEmail);
+            int getAuditEmail=judgeWhetherExistService.getAuditEmailYesNo(email);
+            return yesNoExist(getEmail,getAuditEmail);
         }else{
             return null;
         }
     }
 
 
-    private Map<String,Object> yesNoExist(int getNPE){
+    private Map<String,Object> yesNoExist(int getNPE,int getAuditNPE){
         Map<String,Object> map=new HashMap<String,Object>();
-        if (getNPE>0){
+        if (getNPE>0 || getAuditNPE>0){
             // 存在
             map.put("res","true");
         }else {

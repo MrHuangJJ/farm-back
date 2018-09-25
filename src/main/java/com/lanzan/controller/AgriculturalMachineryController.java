@@ -2,6 +2,7 @@ package com.lanzan.controller;
 
 import com.lanzan.entity.AgriculturalMachinery;
 import com.lanzan.entity.UserRegister;
+import com.lanzan.dto.UserDto;
 import com.lanzan.service.AgriculturalMachineryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,10 +74,13 @@ public class AgriculturalMachineryController {
      */
     @RequestMapping(value = "listAgriculturalMachinery")
     @ResponseBody
-    public Map<String,Object> listAgriculturalMachinery(String am_licensePlate,String am_grouping,String am_SN,int page, int limit){
+    public Map<String,Object> listAgriculturalMachinery(HttpServletRequest request,String am_licensePlate, String am_grouping, String am_SN, int page, int limit){
+        UserDto userDao = (UserDto) request.getSession().getAttribute("userDto");
+        //int uid = userDao.getUid();
+        int uid = 1;
         int sum=(page-1)*limit;
-        int count=agriculturalMachineryService.endPageListAgriculturalMachinery(am_licensePlate,am_grouping,am_SN);
-        List<AgriculturalMachinery> agriculturalMachineries = agriculturalMachineryService.listAgriculturalMachinery(am_licensePlate,am_grouping,am_SN,sum,limit);
+        int count=agriculturalMachineryService.endPageListAgriculturalMachinery(uid,am_licensePlate,am_grouping,am_SN);
+        List<AgriculturalMachinery> agriculturalMachineries = agriculturalMachineryService.listAgriculturalMachinery(uid,am_licensePlate,am_grouping,am_SN,sum,limit);
         Map<String,Object> map=new HashMap<String,Object>();
         map.put("code", 0);
         map.put("msg", "");

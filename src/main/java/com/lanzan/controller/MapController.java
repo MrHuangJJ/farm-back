@@ -1,6 +1,7 @@
 package com.lanzan.controller;
 
 import com.lanzan.entity.AgriculturalMachinery;
+import com.lanzan.dto.MapDto;
 import com.lanzan.service.MapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -59,5 +60,24 @@ public class MapController {
         map.put("data",amNameAndId);
         return map;
     }
+
+    /**
+     * 地图农机详细信息查询(根据carId查询)
+     *
+     * @return
+     */
+    @RequestMapping(value = "getMapDto")
+    @ResponseBody
+    public Map<String,Object> getMapDto(String carId){
+        Map<String,Object> map=new HashMap<String,Object>();
+        if (carId!=null && carId!=""){
+            MapDto mapDto = mapService.getMapDto(carId);
+            map.put("data",mapDto);
+        } else {
+            map.put("res","false");
+        }
+        return map;
+    }
+
 
 }

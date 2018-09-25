@@ -52,7 +52,7 @@ public class UserController {
             map.put("res","其他错误");
             e.printStackTrace();
         }
-        //登陆成功,拿取用户的相应的信息
+        //登陆成功,获取用户的udi与rid
         UserDto userDto = userService.getUserDto(user.getUname());
         //将用户信息存储到session
         request.getSession().setAttribute("userDto",userDto);

@@ -8,15 +8,25 @@
     <select id="getunameyesno" resultType="int" parameterType="String">
         SELECT COUNT(*) FROM user WHERE uname=#{uname}
     </select>
+    <select id="getAuditNameYesNo" resultType="int" parameterType="String">
+        SELECT COUNT(*) FROM reginfo WHERE ri_uname=#{uname}
+    </select>
+
 
     <!-- 判断手机号是否存在 -->
     <select id="getPhoneYesNo" resultType="int" parameterType="String">
         SELECT COUNT(*) FROM userinfo WHERE ui_phone=#{phone}
     </select>
+    <select id="getAuditPhoneYesNo" resultType="int" parameterType="String">
+        SELECT COUNT(*) FROM reginfo WHERE ri_uiphone=#{phone}
+    </select>
 
     <!-- 判断邮箱是否存在 -->
     <select id="getEmailYesNo" resultType="int" parameterType="String">
         SELECT COUNT(*) FROM userinfo WHERE ui_email=#{email}
+    </select>
+    <select id="getAuditEmailYesNo" resultType="int" parameterType="String">
+        SELECT COUNT(*) FROM reginfo WHERE ri_uiemail=#{email}
     </select>
 
     <!-- 判断carID是否存在 -->
