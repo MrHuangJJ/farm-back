@@ -33,11 +33,11 @@ public class AgriculturalMachineryServiceImp implements AgriculturalMachinerySer
     // 查询农机
     public List<AgriculturalMachinery> listAgriculturalMachinery(
             int uid,
-            @Param(value = "am_licensePlate") String am_licensePlate,
-            @Param(value = "am_grouping") String am_grouping,
-            @Param(value = "am_SN") String am_SN,
-            @Param(value = "pageNum") int pageNum,
-            @Param(value = "pageSize") int pageSize) {
+            String am_licensePlate,
+            String am_grouping,
+            String am_SN,
+            int pageNum,
+            int pageSize) {
         //返回的农机集合
         List<AgriculturalMachinery> AmList = new ArrayList<AgriculturalMachinery>();
         //第一步 根据传入的uid拿到用户的信息
@@ -64,6 +64,8 @@ public class AgriculturalMachineryServiceImp implements AgriculturalMachinerySer
                                                 @Param(value = "am_SN") String am_SN) {
         //返回的农机集合
         List<AgriculturalMachinery> AmList = new ArrayList<AgriculturalMachinery>();
+        //尾页
+        int count = 0;
         //第一步 根据传入的uid拿到用户的信息
         UserRegister userRegister = userRegisterMapper.getUserRegisterByUid(uid);
         //判断用户的类型是农机站还是合作社
@@ -72,15 +74,17 @@ public class AgriculturalMachineryServiceImp implements AgriculturalMachinerySer
             //用户是农机站，查询他所属的合作社或农机站
             List<UserRegister> userRegisters = userRegisterMapper.getUserRegistersByUid(userRegister.getUid());
             for (UserRegister register : userRegisters) {
-                //自己调用自己，拿到农机集合
-                AmList.addAll(getAgriculturalMachinery(register.getUid()));
+                //自己调用自己，拿到农机的数量
+                count = count + endPageListAgriculturalMachinery(register.getUid(),am_licensePlate,am_grouping,am_SN);
+                //AmList.addAll(getAgriculturalMachinery(register.getUid()));
             }
         }else{
-            //用户是合作社,根据用户id查询农机信息
-            AmList.get(agriculturalMachineryMapper.endPageListAgriculturalMachinery(userRegister.getUid(),am_licensePlate,am_grouping,am_SN));
+            //用户是合作社,根据用户id查询农机数量
+            //AmList.get(agriculturalMachineryMapper.endPageListAgriculturalMachinery(userRegister.getUid(),am_licensePlate,am_grouping,am_SN));
+            count = count + agriculturalMachineryMapper.endPageListAgriculturalMachinery(userRegister.getUid(),am_licensePlate,am_grouping,am_SN);
         }
         //将用户查询到的农机信息添加到集合容器
-        return AmList.size();
+        return count;
     }
 
     // 修改农机

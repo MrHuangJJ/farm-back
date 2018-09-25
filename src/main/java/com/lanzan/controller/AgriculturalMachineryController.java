@@ -77,7 +77,7 @@ public class AgriculturalMachineryController {
     public Map<String,Object> listAgriculturalMachinery(HttpServletRequest request,String am_licensePlate, String am_grouping, String am_SN, int page, int limit){
         UserDto userDao = (UserDto) request.getSession().getAttribute("userDto");
         //int uid = userDao.getUid();
-        int uid = 1;
+        int uid = 3;
         int sum=(page-1)*limit;
         int count=agriculturalMachineryService.endPageListAgriculturalMachinery(uid,am_licensePlate,am_grouping,am_SN);
         List<AgriculturalMachinery> agriculturalMachineries = agriculturalMachineryService.listAgriculturalMachinery(uid,am_licensePlate,am_grouping,am_SN,sum,limit);
