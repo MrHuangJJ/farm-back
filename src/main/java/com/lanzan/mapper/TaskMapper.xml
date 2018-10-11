@@ -20,6 +20,9 @@
         SELECT task.*,agriculturalmachinery.am_id,agriculturalmachinery.am_licensePlate,agriculturalmachinery.am_SN,
         driver.did,driver.dname,homeworkseason.hs_id,homeworkseason.hs_name FROM task,agriculturalmachinery,driver,homeworkseason
         WHERE task.am_id=agriculturalmachinery.am_id AND task.did=driver.did AND task.hs_id=homeworkseason.hs_id
+            <if test="uid != 0">
+                AND uid=#{uid}
+            </if>
             <if test=" tGrouping!=null and  tGrouping!='' ">
                 AND tgrouping LIKE concat(concat('%',#{tGrouping}),'%')
             </if>
@@ -56,6 +59,9 @@
     <select id="endPageListTaskDto" resultType="int" parameterType="int">
         SELECT COUNT(*) FROM task,agriculturalmachinery,driver,homeworkseason WHERE
           task.am_id=agriculturalmachinery.am_id AND task.did=driver.did AND task.hs_id=homeworkseason.hs_id
+            <if test="uid != 0">
+                AND uid=#{uid}
+            </if>
             <if test=" tGrouping!=null and  tGrouping!='' ">
                 AND tgrouping LIKE concat(concat('%',#{tGrouping}),'%')
             </if>

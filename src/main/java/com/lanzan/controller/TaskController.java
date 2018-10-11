@@ -1,5 +1,6 @@
 package com.lanzan.controller;
 
+import com.lanzan.dto.UserDto;
 import com.lanzan.entity.Task;
 import com.lanzan.dto.TaskDto;
 import com.lanzan.service.TaskService;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,11 +29,14 @@ public class TaskController {
      */
     @RequestMapping(value = "addTask", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> addTask(Task task){
+    public Map<String,Object> addTask(HttpServletRequest request, Task task){
         Map<String,Object> map=new HashMap<String,Object>();
         if (task.getAm_id()!=0 && task.getDid()!=0 && task.getHs_id()!=0
                 && task.getTmachineryType()!=null && task.getTmachineryType()!=""){
             task.setTauditState("待审核");
+            UserDto userDao = (UserDto) request.getSession().getAttribute("userDto");
+            //agriculturalMachinery.setUid(userDao.getUid());
+            task.setUid(1);
             taskService.addTask(task);
             map.put("res","true");
             return map;
@@ -67,10 +72,13 @@ public class TaskController {
      */
     @RequestMapping(value = "listTaskDto")
     @ResponseBody
-    public Map<String,Object> listTaskDto(String tGrouping, String am_SN, String am_licensePlate, String dName, String tType, String tAverage, String tMachineryType, String tAuditState, String tBeginTime, String tendTime,int page, int limit){
+    public Map<String,Object> listTaskDto(HttpServletRequest request,String tGrouping, String am_SN, String am_licensePlate, String dName, String tType, String tAverage, String tMachineryType, String tAuditState, String tBeginTime, String tendTime,int page, int limit){
+        UserDto userDao = (UserDto) request.getSession().getAttribute("userDto");
+        //int uid = userDao.getUid();
+        int uid = 1;
         int sum=(page-1)*limit;
-        int count=taskService.endPageListTaskDto(tGrouping,am_SN,am_licensePlate,dName,tType,tAverage,tMachineryType,tAuditState,tBeginTime,tendTime);
-        List<TaskDto> taskDtos = taskService.listTaskDto(tGrouping,am_SN,am_licensePlate,dName,tType,tAverage,tMachineryType,tAuditState,tBeginTime,tendTime,sum,limit);
+        int count=taskService.endPageListTaskDto(uid,tGrouping,am_SN,am_licensePlate,dName,tType,tAverage,tMachineryType,tAuditState,tBeginTime,tendTime);
+        List<TaskDto> taskDtos = taskService.listTaskDto(uid,tGrouping,am_SN,am_licensePlate,dName,tType,tAverage,tMachineryType,tAuditState,tBeginTime,tendTime,sum,limit);
         Map<String,Object> map=new HashMap<String,Object>();
         map.put("code", 0);
         map.put("msg", "");

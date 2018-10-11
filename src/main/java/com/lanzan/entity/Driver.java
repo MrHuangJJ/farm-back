@@ -16,16 +16,19 @@ public class Driver {
     private String dphone;
     // 身份证号
     private String dcard;
+    // 用户编号
+    private int uid;
 
     public Driver() {
     }
 
-    public Driver(int did, String dgrouping, String dname, String dphone, String dcard) {
+    public Driver(int did, String dgrouping, String dname, String dphone, String dcard, int uid) {
         this.did = did;
         this.dgrouping = dgrouping;
         this.dname = dname;
         this.dphone = dphone;
         this.dcard = dcard;
+        this.uid = uid;
     }
 
     public int getDid() {
@@ -66,5 +69,13 @@ public class Driver {
 
     public void setDcard(String dcard) {
         this.dcard = dcard;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 }

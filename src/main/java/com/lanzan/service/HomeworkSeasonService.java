@@ -19,6 +19,7 @@ public interface HomeworkSeasonService {
 
     // 查询作业季
     List<HomeworkSeason> listHomeworkSeason(
+            @Param(value = "uid") int uid,
             @Param(value = "hs_grouping") String hs_grouping,
             @Param(value = "hs_type") String hs_type,
             @Param(value = "hs_beginTime") String hs_beginTime,
@@ -26,7 +27,8 @@ public interface HomeworkSeasonService {
             @Param(value = "pageNum") int pageNum,
             @Param(value = "pageSize") int pageSize);
     // 尾页
-    int endPageListHomeworkSeason(@Param(value = "hs_grouping") String hs_grouping,
+    int endPageListHomeworkSeason(@Param(value = "uid") int uid,
+                                  @Param(value = "hs_grouping") String hs_grouping,
                                   @Param(value = "hs_type") String hs_type,
                                   @Param(value = "hs_beginTime") String hs_beginTime,
                                   @Param(value = "hs_endTime") String hs_endTime);

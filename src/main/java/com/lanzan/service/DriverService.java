@@ -19,6 +19,7 @@ public interface DriverService {
 
     // 查询所以驾驶员信息
     List<Driver> listDriver(
+            @Param(value = "uid") int uid,
             @Param(value = "dGrouping") String dGrouping,
             @Param(value = "dName") String dName,
             @Param(value = "dPhone") String dPhone,
@@ -26,7 +27,8 @@ public interface DriverService {
             @Param(value = "pageNum") int pageNum,
             @Param(value = "pageSize") int pageSize);
     // 尾页
-    int endPageListDriver(@Param(value = "dGrouping") String dGrouping,
+    int endPageListDriver(@Param(value = "uid") int uid,
+                          @Param(value = "dGrouping") String dGrouping,
                           @Param(value = "dName") String dName,
                           @Param(value = "dPhone") String dPhone,
                           @Param(value = "dCard") String dCard);

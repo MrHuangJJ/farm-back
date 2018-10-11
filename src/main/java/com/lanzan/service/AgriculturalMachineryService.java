@@ -20,25 +20,22 @@ public interface AgriculturalMachineryService {
 
     // 查询农机
     List<AgriculturalMachinery> listAgriculturalMachinery(
-            int uid,
+            @Param(value = "uid") int uid,
             @Param(value = "am_licensePlate") String am_licensePlate,
             @Param(value = "am_grouping") String am_grouping,
             @Param(value = "am_SN") String am_SN,
             @Param(value = "pageNum") int pageNum,
             @Param(value = "pageSize") int pageSize);
     // 尾页
-    int endPageListAgriculturalMachinery(int uid,@Param(value = "am_licensePlate") String am_licensePlate,
+    int endPageListAgriculturalMachinery(@Param(value = "uid") int uid,
+                                         @Param(value = "am_licensePlate") String am_licensePlate,
                                          @Param(value = "am_grouping") String am_grouping,
                                          @Param(value = "am_SN") String am_SN);
-
 
     // 修改农机
     void updateAgriculturalMachinery(AgriculturalMachinery agriculturalMachinery);
 
     // 根据am_SM修改农机状态
-    void updateAmState(String am_state,String carId);
-
-    //查询用户所属的农机
-    List<AgriculturalMachinery> getAgriculturalMachinery(int uid);
+    void updateAmState(@Param(value = "am_state")String am_state,@Param(value = "carId")String carId);
 
 }

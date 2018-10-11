@@ -21,13 +21,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class CarsController{
+
+    private static CloseableHttpClient closeableHttpClient;
 
     @Autowired
     private CarsService carsService;
@@ -38,151 +37,86 @@ public class CarsController{
     @Autowired
     private AgriculturalMachineryService agriculturalMachineryService;
 
-    /**
-     * 如果用的是同一个HttpClient且没去手动连接放掉client.getConnectionManager().shutdown();
-     *
-     * 都不用去设置cookie的ClientPNames.COOKIE_POLICY。httpclient都是会保留cookie的
-     * @param loginUrl
-     * @param loginNameValuePair
-     * @param urlAndNamePairList
-     * @return
-     */
-    public static Map<String,String> doPostWithOneHttpclient(String loginUrl,List<NameValuePair> loginNameValuePair, Map<String,List<NameValuePair>> urlAndNamePairList) {
-        //返回每个URL对应的响应信息
-        Map<String,String> map = new HashMap<String,String>();
-        String retStr = "";//每次响应信息
-        int statusCode = 0 ;//每次响应代码
-
+    @Scheduled(cron = "0/2 * * * * ?")//每隔2秒执行一次//@Scheduled(cron = "0 0 * * * ?")//每隔1小时执行一次
+    public void test001(){
         // 创建HttpClientBuilder
-        HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
-        // HttpClient
-        CloseableHttpClient closeableHttpClient = null;
-        closeableHttpClient = httpClientBuilder.build();
-        HttpPost httpPost = new HttpPost(loginUrl);
-        // 设置请求和传输超时时间
-        RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(30000).setConnectTimeout(30000).build();
-        httpPost.setConfig(requestConfig);
-        UrlEncodedFormEntity entity = null;
-        try {
-            if(null!=loginNameValuePair){
-                entity = new UrlEncodedFormEntity(loginNameValuePair, "UTF-8");
-                httpPost.setEntity(entity);
-            }
+        if (closeableHttpClient == null) {
             //登录
-            CloseableHttpResponse loginResponse = closeableHttpClient.execute(httpPost);
-            statusCode = loginResponse.getStatusLine().getStatusCode();
-            retStr = EntityUtils.toString(loginResponse.getEntity(), "UTF-8");
-            map.put(loginUrl, retStr);
+            HttpPost httpPost = new HttpPost("http://www.tbitgps.com/accountAction!login.do");
+            closeableHttpClient = HttpClientBuilder.create().build();
+            httpPost.setConfig(
+                    RequestConfig.custom().setSocketTimeout(30000).setConnectTimeout(30000).build()// 设置请求和传输超时时间
+            );
+            //登录的相关参数以及登录后操作参数
+            List<NameValuePair> loginParams = new ArrayList<NameValuePair>();
+            loginParams.add(new BasicNameValuePair("type","2"));
+            loginParams.add(new BasicNameValuePair("name", "31017"));
+            loginParams.add(new BasicNameValuePair("password", "sh123456"));
+            try {
+                UrlEncodedFormEntity entity = new UrlEncodedFormEntity(loginParams, "UTF-8");
+                //登录
+                httpPost.setEntity(entity);
+                CloseableHttpResponse loginResponse = closeableHttpClient.execute(httpPost);
+                System.out.println("登录：" + EntityUtils.toString(loginResponse.getEntity(), "UTF-8"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
+        // 获取盒子信息
+        try{
+            String queryUrl = "http://www.tbitgps.com/accountAction!getData.do";
+            List<NameValuePair> queryParams = new ArrayList<NameValuePair>();
+            Map<String,List<NameValuePair>> queryMap = new HashMap<String,List<NameValuePair>>();
+            queryMap.put(queryUrl, queryParams);
             //登录后其他操作
-            for(Map.Entry<String,List<NameValuePair>> entry : urlAndNamePairList.entrySet()){
+            for(Map.Entry<String,List<NameValuePair>> entry : queryMap.entrySet()){
                 String url = entry.getKey();
-                List<NameValuePair> params = urlAndNamePairList.get(url);
-                httpPost = new HttpPost(url);
-                if(null!=params){
-                    entity = new UrlEncodedFormEntity(params, "UTF-8");
+                List<NameValuePair> params = queryMap.get(url);
+                HttpPost httpPost = new HttpPost(url);
+                if(null != params){
+                    UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, "UTF-8");
                     httpPost.setEntity(entity);
                 }
                 CloseableHttpResponse operationResponse = closeableHttpClient.execute(httpPost);
-                statusCode = operationResponse.getStatusLine().getStatusCode();
-                retStr = EntityUtils.toString(operationResponse.getEntity(), "UTF-8");
-                map.put(url, retStr);
-
+                Integer statusCode = operationResponse.getStatusLine().getStatusCode();
+                //接收数据
+                String str = EntityUtils.toString(operationResponse.getEntity(), "UTF-8");
+                JSONObject jsonObject = JSONObject.fromObject(str);
+                JSONObject jsonResult=jsonObject.getJSONObject("result");
+                if (jsonResult!=null && jsonResult.size()>0){
+                    JSONArray jsonArrayCars = jsonObject.getJSONObject("result").getJSONArray("cars");
+                    if (jsonArrayCars!=null && jsonArrayCars.size()>0){
+                        JSONObject row = null;
+                            for (int k = 0; k < jsonArrayCars.size(); k++) {
+                                Cars cars=new Cars();
+                                row = jsonArrayCars.getJSONObject(k);
+                                cars.setCarIcon((Integer) row.get("carIcon"));
+                                cars.setCarId((Integer) row.get("carId"));
+                                cars.setCarNO((String) row.get("carNO"));
+                                cars.setMachineNO((String) row.get("machineNO"));
+                                cars.setServiceStatus((Integer) row.get("serviceStatus"));
+                                cars.setServiceTime((String) row.get("serviceTime"));
+                                cars.setTeamId((Integer) row.get("teamId"));
+                                int car=judgeWhetherExistService.getCarIdYesNo(row.get("carId").toString());
+                                if (car < 1){
+                                    //盒子数据不存在 添加
+                                    carsService.addCars(cars);
+                                }
+                            }
+                    }
+                }
                 if(statusCode == 302){
                     String redirectUrl = operationResponse.getLastHeader("Location").getValue();
                     httpPost = new HttpPost(redirectUrl);
                     CloseableHttpResponse redirectResponse = closeableHttpClient.execute(httpPost);
-                    statusCode = redirectResponse.getStatusLine().getStatusCode();
-                    retStr = EntityUtils.toString(redirectResponse.getEntity(), "UTF-8");
-                    map.put(redirectUrl, retStr);
                 }
             }
-            // 释放资源
-            closeableHttpClient.close();
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
         }
-        return map;
-    }
 
-
-    // 添加Cars
-    @Scheduled(cron = "0 0 * * * ?")//每隔1小时执行一次
-    public void addCars() {
-        //登录的地址以及登录操作参数
-        String loginUrl = "http://www.tbitgps.com/accountAction!login.do";
-
-        List<NameValuePair> loginParams = new ArrayList<NameValuePair>();
-        loginParams.add(new BasicNameValuePair("type","2"));
-        loginParams.add(new BasicNameValuePair("name", "31017"));
-        loginParams.add(new BasicNameValuePair("password", "sh123456"));
-
-        //登录后操作地址以及登录后操作参数
-        String queryUrl = "http://www.tbitgps.com/accountAction!getData.do";
-        List<NameValuePair> queryParams = new ArrayList<NameValuePair>();
-
-        Map<String,List<NameValuePair>> map = new HashMap<String,List<NameValuePair>>();
-        map.put(queryUrl, queryParams);
-        Map<String,String> returnMap = doPostWithOneHttpclient(loginUrl, loginParams, map);
-
-        //接收jsonArray数据
-        JSONArray jsonArray = JSONArray.fromObject(returnMap.values());
-        for (int i = 0; i < jsonArray.size(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            JSONObject jsonresult=jsonObject.getJSONObject("result");
-            if (jsonresult!=null && jsonresult.size()>0){
-                JSONArray jsonArraycars = jsonObject.getJSONObject("result").getJSONArray("cars");
-                if (jsonArraycars!=null && jsonArraycars.size()>0){
-                    JSONObject row = null;
-                    for (int k = 0; k < jsonArraycars.size(); k++) {
-                        Cars cars=new Cars();
-                        row = jsonArraycars.getJSONObject(k);
-                        cars.setCarIcon((Integer) row.get("carIcon"));
-                        cars.setCarId((Integer) row.get("carId"));
-                        cars.setCarNO((String) row.get("carNO"));
-                        cars.setMachineNO((String) row.get("machineNO"));
-                        cars.setServiceStatus((Integer) row.get("serviceStatus"));
-                        cars.setServiceTime((String) row.get("serviceTime"));
-                        cars.setTeamId((Integer) row.get("teamId"));
-                        int car=judgeWhetherExistService.getCarIdYesNo(row.get("carId").toString());
-                        if (car>0){
-                            //存在 不做操作
-                            System.out.println("car==="+car);
-                        }else {
-                            //不存在 添加
-                            carsService.addCars(cars);
-                        }
-                    }
-                }
-            }
-
-        }
-    }
-
-
-
-    /**
-     * 实时位置数据添加
-     *
-     */
-    //@Scheduled(cron = "0/10 * * * * ?")//每隔4秒执行一次
-    public void addRealTime() {
-        //登录的地址以及登录操作参数
-        String loginUrl = "http://www.tbitgps.com/accountAction!login.do";
-        //登录的相关参数以及登录后操作参数
-        List<NameValuePair> loginParams = new ArrayList<NameValuePair>();
-        loginParams.add(new BasicNameValuePair("type","2"));
-        loginParams.add(new BasicNameValuePair("name", "31017"));
-        loginParams.add(new BasicNameValuePair("password", "sh123456"));
-
-        //获取车辆信息位置
-        String catUrl = "http://www.tbitgps.com/carAction!getPositionByID.do";
-        List<NameValuePair> catParams = new ArrayList<NameValuePair>();
-
-        // 根据车辆编号获取在线状态
-        String carStateUrl="http://www.tbitgps.com/carAction!getOnLineByCarID.do";
-        List<NameValuePair> carStateParams = new ArrayList<NameValuePair>();
-
+        // 获取车辆终端码
         StringBuilder str=new StringBuilder();
         List<Cars> cars=carsService.listCarId();
         for (int i = 0; i < cars.size(); i++) {
@@ -193,76 +127,113 @@ public class CarsController{
                 str.append(",");
             }
         }
-        System.out.println(str);
-        catParams.add(new BasicNameValuePair("carId",str+","));
-        carStateParams.add(new BasicNameValuePair("carId",str+","));
 
+        //获取车辆信息位置
+        try {
+            String catUrl = "http://www.tbitgps.com/carAction!getPositionByID.do";
+            List<NameValuePair> catParams = new ArrayList<NameValuePair>();
+            catParams.add(new BasicNameValuePair("carId",str+","));
 
-        Map<String,List<NameValuePair>> map = new HashMap<String,List<NameValuePair>>();
-        map.put(catUrl,catParams);
-        Map<String,String> returnMap = doPostWithOneHttpclient(loginUrl, loginParams, map);
-        System.out.println(returnMap.values());
-        //接收jsonArray数据
-        JSONArray jsonArray = JSONArray.fromObject(returnMap.values());
-        for (int i = 0; i < jsonArray.size(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            JSONArray json=jsonObject.getJSONArray("result");
-            if (json!=null && json.size()>0){
-                JSONObject row = null;
-                for (int j = 0; j < json.size(); j++) {
-                    RealTime realTime = new RealTime();
-                    row = json.getJSONObject(j);
-                    realTime.setAcode((String) row.get("acode"));
-                    realTime.setCarId((Integer) row.get("carId"));
-                    realTime.setDirection((Integer) row.get("direction"));
-                    realTime.setGpstime((String) row.get("gpstime"));
-                    realTime.setLa((Double) row.get("la"));
-                    realTime.setLat((Double) row.get("lat"));
-                    realTime.setLng((Double) row.get("lng"));
-                    realTime.setLo((Double) row.get("lo"));
-                    realTime.setMileage((Integer) row.get("mileage"));
-                    realTime.setOnline((Boolean) row.get("online"));
-                    realTime.setPointed((Integer) row.get("pointed"));
-                    realTime.setScode((String) row.get("scode"));
-                    realTime.setSpeed((Integer) row.get("speed"));
-                    realTime.setStopTime((Integer) row.get("stopTime"));
-                    realTime.setStrGGPV((String) row.get("strGGPV"));
-                    System.out.println("设备设备："+row.get("online"));
-                    if (row.get("online").equals(true)){
-                        //在线添加数据
-                        realTimeService.addRealTime(realTime);
-                    }else {
-                        //不在线不做操作
-                        System.out.println("设备不在线");
-                    }
+            Map<String,List<NameValuePair>> urlAndNamePairList = new HashMap<String,List<NameValuePair>>();
+            urlAndNamePairList.put(catUrl,catParams);
+
+            //登录后其他操作
+            for(Map.Entry<String,List<NameValuePair>> entry : urlAndNamePairList.entrySet()){
+                String url = entry.getKey();
+                List<NameValuePair> params = urlAndNamePairList.get(url);
+                HttpPost httpPost = new HttpPost(url);
+                if(null!=params){
+                    UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, "UTF-8");
+                    httpPost.setEntity(entity);
+                }
+                CloseableHttpResponse operationResponse = closeableHttpClient.execute(httpPost);
+                Integer statusCode = operationResponse.getStatusLine().getStatusCode();
+
+                //接收数据
+                String catStr = EntityUtils.toString(operationResponse.getEntity(), "UTF-8");
+                JSONObject jsonObject = JSONObject.fromObject(catStr);
+                    JSONArray json=jsonObject.getJSONArray("result");
+                    if (json!=null && json.size()>0){
+                        JSONObject row = null;
+                        for (int j = 0; j < json.size(); j++) {
+                            RealTime realTime = new RealTime();
+                            row = json.getJSONObject(j);
+                            realTime.setAcode((String) row.get("acode"));
+                            realTime.setCarId((Integer) row.get("carId"));
+                            realTime.setDirection((Integer) row.get("direction"));
+                            realTime.setGpstime((String) row.get("gpstime"));
+                            realTime.setLa((Double) row.get("la"));
+                            realTime.setLat((Double) row.get("lat"));
+                            realTime.setLng((Double) row.get("lng"));
+                            realTime.setLo((Double) row.get("lo"));
+                            realTime.setMileage((Integer) row.get("mileage"));
+                            realTime.setOnline((Boolean) row.get("online"));
+                            realTime.setPointed((Integer) row.get("pointed"));
+                            realTime.setScode((String) row.get("scode"));
+                            realTime.setSpeed((Integer) row.get("speed"));
+                            realTime.setStopTime((Integer) row.get("stopTime"));
+                            realTime.setStrGGPV((String) row.get("strGGPV"));
+                            if (row.get("online").equals(true)){
+                                //在线添加数据
+                                realTimeService.addRealTime(realTime);
+                            }
+                        }
+                }
+                if(statusCode == 302){
+                    String redirectUrl = operationResponse.getLastHeader("Location").getValue();
+                    httpPost = new HttpPost(redirectUrl);
+                    CloseableHttpResponse redirectResponse = closeableHttpClient.execute(httpPost);
                 }
             }
-
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        // 接收车辆状态数据
-        Map<String,List<NameValuePair>> stateMap = new HashMap<String,List<NameValuePair>>();
-        stateMap.put(carStateUrl,carStateParams);
-        Map<String,String> returnStateMap = doPostWithOneHttpclient(loginUrl, loginParams, stateMap);
-        System.out.println(returnStateMap.values());
-        JSONArray catStateJsonArray = JSONArray.fromObject(returnStateMap.values());
-        for (int i = 0; i < catStateJsonArray.size(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            JSONArray json=jsonObject.getJSONArray("result");
-            if (json!=null && json.size()>0){
-                JSONObject row = null;
-                for (int j = 0; j < json.size(); j++) {
-                    row = json.getJSONObject(j);
-                    if (row.get("online").equals(true)){
-                        //车辆在线
-                        System.out.println("进入");
-                        agriculturalMachineryService.updateAmState("在线",row.get("carId").toString());
-                    }else {
-                        //不在线
-                        agriculturalMachineryService.updateAmState("离线",row.get("carId").toString());
-                    }
+
+        // 获取在线状态
+        try {
+            // 根据车辆编号获取在线状态接口
+            String carStateUrl="http://www.tbitgps.com/carAction!getOnLineByCarID.do";
+            List<NameValuePair> carStateParams = new ArrayList<NameValuePair>();
+            carStateParams.add(new BasicNameValuePair("carId",str+","));
+
+            Map<String,List<NameValuePair>> stateMap = new HashMap<String,List<NameValuePair>>();
+            stateMap.put(carStateUrl,carStateParams);
+            //登录后其他操作
+            for(Map.Entry<String,List<NameValuePair>> entry : stateMap.entrySet()){
+                String url = entry.getKey();
+                List<NameValuePair> params = stateMap.get(url);
+                HttpPost httpPost = new HttpPost(url);
+                if(null!=params){
+                    UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, "UTF-8");
+                    httpPost.setEntity(entity);
+                }
+                CloseableHttpResponse operationResponse = closeableHttpClient.execute(httpPost);
+
+                Integer statusCode = operationResponse.getStatusLine().getStatusCode();
+                String catStateStr = EntityUtils.toString(operationResponse.getEntity(), "UTF-8");
+                JSONObject jsonObject = JSONObject.fromObject(catStateStr);
+                JSONArray json=jsonObject.getJSONArray("result");
+                if (json!=null && json.size()>0){
+                    JSONObject row = null;
+                        for (int j = 0; j < json.size(); j++) {
+                            row = json.getJSONObject(j);
+                            if (row.get("online").equals(true)){
+                                //车辆在线
+                                agriculturalMachineryService.updateAmState("在线",row.get("carId").toString());
+                            }else {
+                                //不在线
+                                agriculturalMachineryService.updateAmState("离线",row.get("carId").toString());
+                            }
+                        }
+                }
+                if(statusCode == 302){
+                    String redirectUrl = operationResponse.getLastHeader("Location").getValue();
+                    httpPost = new HttpPost(redirectUrl);
+                    CloseableHttpResponse redirectResponse = closeableHttpClient.execute(httpPost);
                 }
             }
-
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
     }

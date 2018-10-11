@@ -1,5 +1,6 @@
 package com.lanzan.controller;
 
+import com.lanzan.dto.UserDto;
 import com.lanzan.entity.AgriculturalMachinery;
 import com.lanzan.dto.MapDto;
 import com.lanzan.service.MapService;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +28,11 @@ public class MapController {
      */
     @RequestMapping(value = "getOnLineAm")
     @ResponseBody
-    public Map<String,Object> getOnLineAm(){
-        List<AgriculturalMachinery> amNameAndId=mapService.getOnLineAm();
+    public Map<String,Object> getOnLineAm(HttpServletRequest request){
+        UserDto userDao = (UserDto) request.getSession().getAttribute("userDto");
+        //int uid = userDao.getUid();
+        int uid = 1;
+        List<AgriculturalMachinery> amNameAndId=mapService.getOnLineAm(uid);
         Map<String,Object> map=new HashMap<String,Object>();
         map.put("data",amNameAndId);
         return map;
@@ -40,8 +45,11 @@ public class MapController {
      */
     @RequestMapping(value = "getOffLineAm")
     @ResponseBody
-    public Map<String,Object> getOffLineAm(){
-        List<AgriculturalMachinery> amNameAndId=mapService.getOffLineAm();
+    public Map<String,Object> getOffLineAm(HttpServletRequest request){
+        UserDto userDao = (UserDto) request.getSession().getAttribute("userDto");
+        //int uid = userDao.getUid();
+        int uid = 1;
+        List<AgriculturalMachinery> amNameAndId=mapService.getOffLineAm(uid);
         Map<String,Object> map=new HashMap<String,Object>();
         map.put("data",amNameAndId);
         return map;
@@ -54,8 +62,11 @@ public class MapController {
      */
     @RequestMapping(value = "getGroupingAm")
     @ResponseBody
-    public Map<String,Object> getGroupingAm(String am_grouping){
-        List<AgriculturalMachinery> amNameAndId=mapService.getGroupingAm(am_grouping);
+    public Map<String,Object> getGroupingAm(HttpServletRequest request,String am_grouping){
+        UserDto userDao = (UserDto) request.getSession().getAttribute("userDto");
+        //int uid = userDao.getUid();
+        int uid = 1;
+        List<AgriculturalMachinery> amNameAndId=mapService.getGroupingAm(uid,am_grouping);
         Map<String,Object> map=new HashMap<String,Object>();
         map.put("data",amNameAndId);
         return map;

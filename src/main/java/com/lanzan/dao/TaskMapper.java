@@ -20,6 +20,7 @@ public interface TaskMapper {
 
     // 任务查询
     List<TaskDto> listTaskDto(
+            @Param(value = "uid") int uid,
             @Param(value = "tGrouping") String tGrouping,
             @Param(value = "am_SN") String am_SN,
             @Param(value = "am_licensePlate") String am_licensePlate,
@@ -35,6 +36,7 @@ public interface TaskMapper {
     );
     //尾页
     int endPageListTaskDto(
+            @Param(value = "uid") int uid,
             @Param(value = "tGrouping") String tGrouping,
             @Param(value = "am_SN") String am_SN,
             @Param(value = "am_licensePlate") String am_licensePlate,
@@ -46,5 +48,9 @@ public interface TaskMapper {
             @Param(value = "tBeginTime") String tBeginTime,
             @Param(value = "tendTime") String tendTime
     );
+
+
+    //
+
 
 }

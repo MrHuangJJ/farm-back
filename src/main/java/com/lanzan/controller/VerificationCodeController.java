@@ -31,8 +31,7 @@ public class VerificationCodeController {
     public Map<String,Object> getPhoneNewCode(String vc_phone, String vc_code){
         //判断手机号是否存在
         Map<String,Object> map=new HashMap<String,Object>();
-        int phone=judgeWhetherExistService.getPhoneYesNo(vc_phone);
-        if (vc_phone!=null && vc_code!=null && phone>0){
+        if (vc_phone!=null && vc_code!=null){
             String code=verificationCodeService.getphonenewcode(vc_phone);
             /*if (code.equals(vc_code)){
                 //验证码正确
@@ -60,18 +59,8 @@ public class VerificationCodeController {
     public Map<String,Object> getRegPhoneEnEwCode(String regPhone,String regCode){
         //判断手机号是否存在
         Map<String,Object> map=new HashMap<String,Object>();
-        int phone=judgeWhetherExistService.getPhoneYesNo(regPhone);
-        if (regPhone!=null && regCode!=null && phone>0){
+        if (regPhone!=null && regCode!=null){
             String code=verificationCodeService.getRegPhoneEnEwCode(regPhone);
-            /*if (code.equals(regCode)){
-                //验证码正确
-                map.put("res","true");
-                return map;
-            }else{
-                //验证码错误
-                map.put("res","false");
-                return map;
-            }*/
             return isCode(code,regCode);
         }else{
             return null;

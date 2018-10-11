@@ -22,11 +22,13 @@ public class AgriculturalMachinery {
     private String am_SIM;
     // 农机状态
     private String am_state;
+    // 用户编号
+    private int uid;
 
     public AgriculturalMachinery() {
     }
 
-    public AgriculturalMachinery(int am_id, String am_licensePlate, String am_grouping, String am_modelNumber, String am_type, String am_SN, String am_SIM, String am_state) {
+    public AgriculturalMachinery(int am_id, String am_licensePlate, String am_grouping, String am_modelNumber, String am_type, String am_SN, String am_SIM, String am_state, int uid) {
         this.am_id = am_id;
         this.am_licensePlate = am_licensePlate;
         this.am_grouping = am_grouping;
@@ -35,6 +37,7 @@ public class AgriculturalMachinery {
         this.am_SN = am_SN;
         this.am_SIM = am_SIM;
         this.am_state = am_state;
+        this.uid = uid;
     }
 
     public int getAm_id() {
@@ -99,5 +102,13 @@ public class AgriculturalMachinery {
 
     public void setAm_state(String am_state) {
         this.am_state = am_state;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 }

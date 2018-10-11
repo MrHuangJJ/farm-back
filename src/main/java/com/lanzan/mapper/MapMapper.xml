@@ -6,17 +6,17 @@
 
     <!-- 查询在线农机 -->
     <select id="getOnLineAm" resultType="com.lanzan.entity.AgriculturalMachinery">
-        SELECT * FROM agriculturalmachinery WHERE am_state='在线'
+        SELECT * FROM agriculturalmachinery WHERE uid=#{uid} AND am_state='在线'
     </select>
 
     <!-- 查询离线农机 -->
     <select id="getOffLineAm" resultType="com.lanzan.entity.AgriculturalMachinery">
-        SELECT * FROM agriculturalmachinery WHERE am_state='离线'
+        SELECT * FROM agriculturalmachinery WHERE uid=#{uid} AND am_state='离线'
     </select>
 
     <!-- 根据分组查询农机 -->
     <select id="getGroupingAm" resultType="com.lanzan.entity.AgriculturalMachinery" parameterType="String">
-        SELECT * FROM agriculturalmachinery WHERE am_grouping LIKE "%"#{am_grouping}"%"
+        SELECT * FROM agriculturalmachinery WHERE uid=#{uid} AND am_grouping LIKE "%"#{am_grouping}"%"
     </select>
 
     <!-- 地图农机详细信息查询(根据农机编号查询) -->

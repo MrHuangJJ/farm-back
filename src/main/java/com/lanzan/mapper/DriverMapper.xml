@@ -6,8 +6,8 @@
 
     <!-- 添加驾驶员 -->
     <insert id="addDriver" parameterType="com.lanzan.entity.Driver">
-        INSERT INTO driver(dgrouping,dname,dphone,dcard)
-		    VALUES (#{dgrouping},#{dname},#{dphone},#{dcard})
+        INSERT INTO driver(dgrouping,dname,dphone,dcard,uid)
+		    VALUES (#{dgrouping},#{dname},#{dphone},#{dcard},#{uid})
     </insert>
 
     <!-- 删除驾驶员 -->
@@ -19,8 +19,11 @@
     <select id="listDriver" resultType="com.lanzan.entity.Driver" parameterType="int">
         SELECT did,dgrouping,dname,dphone,dcard FROM driver
             <where>
+                <if test="uid != 0">
+                    uid=#{uid}
+                </if>
                 <if test=" dGrouping!=null and  dGrouping!='' ">
-                    dgrouping LIKE concat(concat('%',#{dGrouping}),'%')
+                    AND dgrouping LIKE concat(concat('%',#{dGrouping}),'%')
                 </if>
                 <if test=" dName!=null and  dName!='' ">
                     AND dname LIKE concat(concat('%',#{dName}),'%')
@@ -38,8 +41,11 @@
     <select id="endPageListDriver" resultType="int" parameterType="String">
         SELECT COUNT(*) FROM driver
             <where>
+                <if test="uid != 0">
+                    uid=#{uid}
+                </if>
                 <if test=" dGrouping!=null and  dGrouping!='' ">
-                    dgrouping LIKE concat(concat('%',#{dGrouping}),'%')
+                    AND dgrouping LIKE concat(concat('%',#{dGrouping}),'%')
                 </if>
                 <if test=" dName!=null and  dName!='' ">
                     AND dname LIKE concat(concat('%',#{dName}),'%')

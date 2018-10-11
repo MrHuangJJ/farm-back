@@ -1,5 +1,6 @@
 package com.lanzan.controller;
 
+import com.lanzan.dto.UserDto;
 import com.lanzan.entity.Driver;
 import com.lanzan.entity.AgriculturalMachinery;
 import com.lanzan.entity.HomeworkSeason;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,8 +30,11 @@ public class ConditionController {
      */
     @RequestMapping(value = "getAmNameAndId")
     @ResponseBody
-    public Map<String,Object> getAmNameAndId(){
-        List<AgriculturalMachinery> amNameAndId=conditionSelectService.getAmNameAndId();
+    public Map<String,Object> getAmNameAndId(HttpServletRequest request){
+        UserDto userDao = (UserDto) request.getSession().getAttribute("userDto");
+        //int uid = userDao.getUid();
+        int uid = 1;
+        List<AgriculturalMachinery> amNameAndId=conditionSelectService.getAmNameAndId(uid);
         Map<String,Object> map=new HashMap<String,Object>();
         map.put("data",amNameAndId);
         return map;
@@ -56,8 +61,11 @@ public class ConditionController {
      */
     @RequestMapping(value = "getDriverNameAndId")
     @ResponseBody
-    public Map<String,Object> getDriverNameAndId(){
-        List<Driver> driverNameAndId=conditionSelectService.getDriverNameAndId();
+    public Map<String,Object> getDriverNameAndId(HttpServletRequest request){
+        UserDto userDao = (UserDto) request.getSession().getAttribute("userDto");
+        //int uid = userDao.getUid();
+        int uid = 1;
+        List<Driver> driverNameAndId=conditionSelectService.getDriverNameAndId(uid);
         Map<String,Object> map=new HashMap<String,Object>();
         map.put("data",driverNameAndId);
         return map;
@@ -70,8 +78,11 @@ public class ConditionController {
      */
     @RequestMapping(value = "getHsNameAndId")
     @ResponseBody
-    public Map<String,Object> getHsNameAndId(){
-        List<HomeworkSeason> hsNameAndId=conditionSelectService.getHsNameAndId();
+    public Map<String,Object> getHsNameAndId(HttpServletRequest request){
+        UserDto userDao = (UserDto) request.getSession().getAttribute("userDto");
+        //int uid = userDao.getUid();
+        int uid = 1;
+        List<HomeworkSeason> hsNameAndId=conditionSelectService.getHsNameAndId(uid);
         Map<String,Object> map=new HashMap<String,Object>();
         map.put("data",hsNameAndId);
         return map;

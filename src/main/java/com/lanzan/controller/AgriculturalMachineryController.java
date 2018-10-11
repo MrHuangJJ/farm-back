@@ -1,7 +1,6 @@
 package com.lanzan.controller;
 
 import com.lanzan.entity.AgriculturalMachinery;
-import com.lanzan.entity.UserRegister;
 import com.lanzan.dto.UserDto;
 import com.lanzan.service.AgriculturalMachineryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +28,15 @@ public class AgriculturalMachineryController {
      */
     @RequestMapping(value = "addAgriculturalMachinery", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> addAgriculturalMachinery(AgriculturalMachinery agriculturalMachinery){
+    public Map<String,Object> addAgriculturalMachinery(HttpServletRequest request,AgriculturalMachinery agriculturalMachinery){
         Map<String,Object> map=new HashMap<String,Object>();
         if (agriculturalMachinery.getAm_licensePlate()!=null && agriculturalMachinery.getAm_licensePlate()!=""
                 && agriculturalMachinery.getAm_modelNumber()!=null && agriculturalMachinery.getAm_modelNumber()!=""
                 && agriculturalMachinery.getAm_grouping()!=null && agriculturalMachinery.getAm_grouping()!=""
                 && agriculturalMachinery.getAm_SN()!=null && agriculturalMachinery.getAm_SN()!=""){
+            UserDto userDao = (UserDto) request.getSession().getAttribute("userDto");
+            //agriculturalMachinery.setUid(userDao.getUid());
+            agriculturalMachinery.setUid(1);
             agriculturalMachineryService.addAgriculturalMachinery(agriculturalMachinery);
             map.put("res","true");
             return map;
@@ -77,7 +79,7 @@ public class AgriculturalMachineryController {
     public Map<String,Object> listAgriculturalMachinery(HttpServletRequest request,String am_licensePlate, String am_grouping, String am_SN, int page, int limit){
         UserDto userDao = (UserDto) request.getSession().getAttribute("userDto");
         //int uid = userDao.getUid();
-        int uid = 3;
+        int uid = 1;
         int sum=(page-1)*limit;
         int count=agriculturalMachineryService.endPageListAgriculturalMachinery(uid,am_licensePlate,am_grouping,am_SN);
         List<AgriculturalMachinery> agriculturalMachineries = agriculturalMachineryService.listAgriculturalMachinery(uid,am_licensePlate,am_grouping,am_SN,sum,limit);
@@ -111,13 +113,6 @@ public class AgriculturalMachineryController {
             return map;
         }
     }
-
-    @RequestMapping(value = "getAgriculturalMachinerys")
-    @ResponseBody
-    public List<AgriculturalMachinery> getAgriculturalMachinerys(int uid){
-        return agriculturalMachineryService.getAgriculturalMachinery(uid);
-    }
-
 
 
 

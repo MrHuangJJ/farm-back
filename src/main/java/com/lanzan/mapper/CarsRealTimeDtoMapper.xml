@@ -4,6 +4,45 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lanzan.dao.CarsRealTimeDtoMapper">
 
+    <!-- 任务历史轨迹列表 -->
+    <select id="listHistoryDto" resultType="com.lanzan.dto.HistoryDto">
+        SELECT a.am_licensePlate,a.am_SN,t.tid,t.tbeginTime,t.tendTime,t.uid
+            FROM cars as c INNER JOIN agriculturalmachinery AS a ON a.am_SN=c.carNO INNER JOIN task AS t ON t.am_id=a.am_id
+            WHERE t.uid=#{uid}
+                <if test=" am_licensePlate!=null and  am_licensePlate!='' ">
+                    AND a.am_licensePlate LIKE concat(concat('%',#{am_licensePlate}),'%')
+                </if>
+                <if test=" am_SN!=null and  am_SN!='' ">
+                    AND a.am_SN LIKE concat(concat('%',#{am_SN}),'%')
+                </if>
+                <if test=" beginTime!=null and  beginTime!='' ">
+                    AND DATE_FORMAT(t.tbeginTime,'%Y-%m-%d') &gt;= #{beginTime}
+                </if>
+                <if test=" endTime!=null and  endTime!='' ">
+                    AND DATE_FORMAT(t.tendTime,'%Y-%m-%d') &lt;= #{endTime}
+                </if>
+            order by tid desc limit #{pageNum},#{pageSize}
+    </select>
+    <!-- 尾页 -->
+    <select id="endPageListHistoryDto" resultType="int" parameterType="int">
+        SELECT COUNT(*)
+        FROM cars as c INNER JOIN agriculturalmachinery AS a ON a.am_SN=c.carNO INNER JOIN task AS t ON t.am_id=a.am_id
+        WHERE t.uid=#{uid}
+            <if test=" am_licensePlate!=null and  am_licensePlate!='' ">
+                AND a.am_licensePlate LIKE concat(concat('%',#{am_licensePlate}),'%')
+            </if>
+            <if test=" am_SN!=null and  am_SN!='' ">
+                AND a.am_SN LIKE concat(concat('%',#{am_SN}),'%')
+            </if>
+            <if test=" beginTime!=null and  beginTime!='' ">
+                AND DATE_FORMAT(t.tbeginTime,'%Y-%m-%d') &gt;= #{beginTime}
+            </if>
+            <if test=" endTime!=null and  endTime!='' ">
+                AND DATE_FORMAT(t.tendTime,'%Y-%m-%d') &lt;= #{endTime}
+            </if>
+        order by tid desc
+    </select>
+
     <!-- 历史轨迹 -->
     <select id="listCarsRealTimeDto" resultType="com.lanzan.dto.CarsRealTimeDto" parameterType="String">
         SELECT b.acode,b.carId,b.direction,b.gpstime,b.la,b.lat,b.lng,b.lo,b.mileage,b.pointed,b.scode,b.speed,b.stopTime,b.strGGPV

@@ -18,17 +18,20 @@ public class HomeworkSeason {
     private String hs_beginTime;
     // 结束时间
     private String hs_endTime;
+    // 用户编号
+    private int uid;
 
     public HomeworkSeason() {
     }
 
-    public HomeworkSeason(int hs_id, String hs_name, String hs_grouping, String hs_type, String hs_beginTime, String hs_endTime) {
+    public HomeworkSeason(int hs_id, String hs_name, String hs_grouping, String hs_type, String hs_beginTime, String hs_endTime, int uid) {
         this.hs_id = hs_id;
         this.hs_name = hs_name;
         this.hs_grouping = hs_grouping;
         this.hs_type = hs_type;
         this.hs_beginTime = hs_beginTime;
         this.hs_endTime = hs_endTime;
+        this.uid = uid;
     }
 
     public int getHs_id() {
@@ -77,5 +80,13 @@ public class HomeworkSeason {
 
     public void setHs_endTime(String hs_endTime) {
         this.hs_endTime = hs_endTime;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 }

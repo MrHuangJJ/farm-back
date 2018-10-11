@@ -6,8 +6,8 @@
 
     <!-- 添加农机 -->
     <insert id="addAgriculturalMachinery" parameterType="com.lanzan.entity.AgriculturalMachinery">
-        INSERT INTO agriculturalmachinery(am_licensePlate,am_grouping,am_modelNumber,am_type,am_SN,am_SIM)
-		    VALUES (#{am_licensePlate},#{am_grouping},#{am_modelNumber},#{am_type},#{am_SN},#{am_SIM})
+        INSERT INTO agriculturalmachinery(am_licensePlate,am_grouping,am_modelNumber,am_type,am_SN,am_SIM,uid)
+		    VALUES (#{am_licensePlate},#{am_grouping},#{am_modelNumber},#{am_type},#{am_SN},#{am_SIM},#{uid})
     </insert>
 
     <!-- 删除农机 -->
@@ -64,9 +64,5 @@
         UPDATE agriculturalmachinery SET am_state=#{am_state} WHERE am_SN=(SELECT carNo FROM cars WHERE carId=#{carId})
     </update>
 
-    <!--根据用户id查询农机-->
-    <select id="getAgriculturalMachinery" resultType="AgriculturalMachinery" parameterType="int">
-        SELECT * FROM agriculturalmachinery WHERE uid=#{uid}
-    </select>
 
 </mapper>
