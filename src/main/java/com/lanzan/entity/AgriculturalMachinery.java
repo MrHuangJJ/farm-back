@@ -20,6 +20,8 @@ public class AgriculturalMachinery {
     private String am_SN;
     // SIM卡
     private String am_SIM;
+    // 农机最后在线时间
+    private String am_endOnTime;
     // 农机状态
     private String am_state;
     // 用户编号
@@ -28,7 +30,7 @@ public class AgriculturalMachinery {
     public AgriculturalMachinery() {
     }
 
-    public AgriculturalMachinery(int am_id, String am_licensePlate, String am_grouping, String am_modelNumber, String am_type, String am_SN, String am_SIM, String am_state, int uid) {
+    public AgriculturalMachinery(int am_id, String am_licensePlate, String am_grouping, String am_modelNumber, String am_type, String am_SN, String am_SIM, String am_endOnTime, String am_state, int uid) {
         this.am_id = am_id;
         this.am_licensePlate = am_licensePlate;
         this.am_grouping = am_grouping;
@@ -36,6 +38,7 @@ public class AgriculturalMachinery {
         this.am_type = am_type;
         this.am_SN = am_SN;
         this.am_SIM = am_SIM;
+        this.am_endOnTime = am_endOnTime;
         this.am_state = am_state;
         this.uid = uid;
     }
@@ -94,6 +97,14 @@ public class AgriculturalMachinery {
 
     public void setAm_SIM(String am_SIM) {
         this.am_SIM = am_SIM;
+    }
+
+    public String getAm_endOnTime() {
+        return am_endOnTime;
+    }
+
+    public void setAm_endOnTime(String am_endOnTime) {
+        this.am_endOnTime = am_endOnTime;
     }
 
     public String getAm_state() {

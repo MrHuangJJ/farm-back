@@ -17,7 +17,7 @@
 
     <!-- 查询农机 -->
     <select id="listAgriculturalMachinery" resultType="com.lanzan.entity.AgriculturalMachinery">
-        SELECT am_id,am_licensePlate,am_grouping,am_modelNumber,am_type,am_SN,am_SIM,am_state,uid FROM agriculturalmachinery
+        SELECT am_id,am_licensePlate,am_grouping,am_modelNumber,am_type,am_SN,am_SIM,am_endOnTime,am_state,uid FROM agriculturalmachinery
             <where>
                 <if test="uid != 0">
                     uid=#{uid}
@@ -59,10 +59,14 @@
         UPDATE agriculturalmachinery set am_licensePlate=#{am_licensePlate},am_grouping=#{am_grouping},am_modelNumber=#{am_modelNumber},am_type=#{am_type},am_SN=#{am_SN},am_SIM=#{am_SIM} WHERE am_id=#{am_id}
     </update>
 
-    <!-- 根据am_SM修改农机状态 -->
-    <update id="updateAmState" parameterType="String">
-        UPDATE agriculturalmachinery SET am_state=#{am_state} WHERE am_SN=(SELECT carNo FROM cars WHERE carId=#{carId})
+    <!-- 根据am_SM修改农机状态(在线) -->
+    <update id="updateAmStateOn" parameterType="String">
+        UPDATE agriculturalmachinery SET am_state=#{am_state},am_endOnTime=#{am_endOnTime} WHERE am_SN=(SELECT carNo FROM cars WHERE carId=#{carId})
     </update>
 
+    <!-- 离线 -->
+    <update id="updateAmStateNo" parameterType="String">
+        UPDATE agriculturalmachinery SET am_state=#{am_state} WHERE am_SN=(SELECT carNo FROM cars WHERE carId=#{carId})
+    </update>
 
 </mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lanzan.dao.StatisticsMapper">
+
+    <!-- 农机总数 -->
+    <select id="listStatisticsAgriculturalMachinery" resultType="com.lanzan.entity.AgriculturalMachinery">
+        SELECT am_id,am_licensePlate,am_grouping,am_modelNumber,am_type,am_SN,am_SIM,am_endOnTime,am_state,uid FROM agriculturalmachinery
+            <where>
+                <if test="uid != 0">
+                    uid=#{uid}
+                </if>
+                <if test=" am_grouping!=null and  am_grouping!='' ">
+                    AND am_grouping LIKE concat(concat('%',#{am_grouping}),'%')
+                </if>
+            </where>
+            order by am_id desc limit #{pageNum},#{pageSize}
+    </select>
+    <!-- 尾页 -->
+    <select id="endPageListStatisticsAgriculturalMachinery" resultType="int" parameterType="String">
+        SELECT COUNT(*) FROM agriculturalmachinery
+            <where>
+                <if test="uid != 0">
+                    uid=#{uid}
+                </if>
+                <if test=" am_grouping!=null and  am_grouping!='' ">
+                    AND am_grouping LIKE concat(concat('%',#{am_grouping}),'%')
+                </if>
+            </where>
+        order by am_id desc
+    </select>
+
+    <!-- 农机当前在线 -->
+    <select id="onLineAm" resultType="int" parameterType="int">
+        SELECT COUNT(*) FROM agriculturalmachinery WHERE am_state='在线'
+          <if test="uid != 0">
+              AND uid=#{uid}
+          </if>
+    </select>
+
+    <!-- 当日在线农机 -->
+    <select id="toOneOnLineAm" resultType="int" parameterType="int">
+        SELECT COUNT(*) FROM agriculturalmachinery WHERE to_days(am_endOnTime) = to_days(now())
+        <if test="uid != 0">
+            AND uid=#{uid}
+        </if>
+    </select>
+
+    <!-- 当月在线农机 -->
+    <select id="toMonthOnLineAm" resultType="int" parameterType="int">
+        SELECT COUNT(*) FROM agriculturalmachinery WHERE DATE_FORMAT( am_endOnTime, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+        <if test="uid != 0">
+            AND uid=#{uid}
+        </if>
+    </select>
+
+    <!-- 长期离线 -->
+    <select id="offLineAm" resultType="int" parameterType="int">
+        SELECT COUNT(*) FROM agriculturalmachinery WHERE DATE_SUB(CURDATE(), INTERVAL 90 DAY) >= date(am_endOnTime)
+        <if test="uid != 0">
+            AND uid=#{uid}
+        </if>
+    </select>
+
+    <!-- 任务统计 -->
+    <select id="listTaskStatistics" resultType="com.lanzan.entity.Task">
+        SELECT tarea,tendTime FROM task
+        <where>
+            <if test="uid != 0">
+                uid=#{uid}
+            </if>
+            <if test=" tGrouping!=null and  tGrouping!='' ">
+                AND tgrouping LIKE concat(concat('%',#{tGrouping}),'%')
+            </if>
+            <if test=" tType!=null and  tType!='' ">
+                AND ttype LIKE concat(concat('%',#{tType}),'%')
+            </if>
+            <if test=" tBeginTime!=null and  tBeginTime!='' ">
+                AND DATE_FORMAT(tbeginTime,'%Y-%m-%d') &gt;= #{tBeginTime}
+            </if>
+            <if test=" tendTime!=null and  tendTime!='' ">
+                AND DATE_FORMAT(tendTime,'%Y-%m-%d') &lt;= #{tendTime}
+            </if>
+        </where>
+    </select>
+
+
+
+
+</mapper>

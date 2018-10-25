@@ -2,6 +2,7 @@ package com.lanzan.controller;
 
 import com.lanzan.entity.Cars;
 import com.lanzan.entity.RealTime;
+import com.lanzan.entity.AgriculturalMachinery;
 import com.lanzan.service.CarsService;
 import com.lanzan.service.RealTimeService;
 import com.lanzan.service.JudgeWhetherExistService;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
@@ -37,7 +39,7 @@ public class CarsController{
     @Autowired
     private AgriculturalMachineryService agriculturalMachineryService;
 
-    @Scheduled(cron = "0/2 * * * * ?")//每隔2秒执行一次//@Scheduled(cron = "0 0 * * * ?")//每隔1小时执行一次
+    //@Scheduled(cron = "0/2 * * * * ?")//每隔2秒执行一次//@Scheduled(cron = "0 0 * * * ?")//每隔1小时执行一次
     public void test001(){
         // 创建HttpClientBuilder
         if (closeableHttpClient == null) {
@@ -218,11 +220,17 @@ public class CarsController{
                         for (int j = 0; j < json.size(); j++) {
                             row = json.getJSONObject(j);
                             if (row.get("online").equals(true)){
+                                //获取当前的日期
+                                Date date = new Date();
+                                //设置要获取到什么样的时间
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                //获取String类型的时间
+                                String createDate = sdf.format(date);
                                 //车辆在线
-                                agriculturalMachineryService.updateAmState("在线",row.get("carId").toString());
+                                agriculturalMachineryService.updateAmStateOn(createDate,"在线",row.get("carId").toString());
                             }else {
                                 //不在线
-                                agriculturalMachineryService.updateAmState("离线",row.get("carId").toString());
+                                agriculturalMachineryService.updateAmStateNo("离线",row.get("carId").toString());
                             }
                         }
                 }

@@ -20,7 +20,6 @@ public class MapController {
     @Autowired
     private MapService mapService;
 
-
     /**
      * 查询在线农机
      *
@@ -81,7 +80,7 @@ public class MapController {
     @ResponseBody
     public Map<String,Object> getMapDto(String carId){
         Map<String,Object> map=new HashMap<String,Object>();
-        if (carId!=null && carId!=""){
+        if (carId != null && carId != ""){
             MapDto mapDto = mapService.getMapDto(carId);
             map.put("data",mapDto);
         } else {

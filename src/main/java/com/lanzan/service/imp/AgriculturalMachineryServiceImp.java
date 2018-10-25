@@ -79,9 +79,14 @@ public class AgriculturalMachineryServiceImp implements AgriculturalMachinerySer
         agriculturalMachineryMapper.updateAgriculturalMachinery(agriculturalMachinery);
     }
 
-    // 根据am_SM修改农机状态
-    public void updateAmState(String am_state, String carId) {
-        agriculturalMachineryMapper.updateAmState(am_state,carId);
+    // 根据am_SM修改农机状态(在线)
+    public void updateAmStateOn(String am_endOnTime,String am_state, String carId) {
+        agriculturalMachineryMapper.updateAmStateOn(am_endOnTime,am_state,carId);
     }
+    // 离线
+    public void updateAmStateNo(String am_state, String carId) {
+        agriculturalMachineryMapper.updateAmStateNo(am_state,carId);
+    }
+
 
 }

@@ -9,7 +9,7 @@ public class Task {
     // 任务编号
     private int tid;
     // 作业面积
-    private String tarea;
+    private double tarea;
     // 平均深度/留茬高度
     private String taverage;
     // 深度合格率/高度合格率
@@ -51,7 +51,7 @@ public class Task {
     public Task() {
     }
 
-    public Task(int tid, String tarea, String taverage, String tfpy, String tgrouping, int did, int am_id, String ttype, String tauditState, String treportedWay, String tauditWay, String tauditCause, String tbeginTime, String tendTime, int hs_id, String tmachineryType, String taddress, Double tbreadth, String tscope, int uid) {
+    public Task(int tid, double tarea, String taverage, String tfpy, String tgrouping, int did, int am_id, String ttype, String tauditState, String treportedWay, String tauditWay, String tauditCause, String tbeginTime, String tendTime, int hs_id, String tmachineryType, String taddress, Double tbreadth, String tscope, int uid) {
         this.tid = tid;
         this.tarea = tarea;
         this.taverage = taverage;
@@ -82,11 +82,11 @@ public class Task {
         this.tid = tid;
     }
 
-    public String getTarea() {
+    public double getTarea() {
         return tarea;
     }
 
-    public void setTarea(String tarea) {
+    public void setTarea(double tarea) {
         this.tarea = tarea;
     }
 

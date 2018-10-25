@@ -30,7 +30,7 @@
 			   task.ttype,task.tbreadth
         FROM task,agriculturalmachinery,driver,cars
         WHERE task.am_id=agriculturalmachinery.am_id AND task.did=driver.did
-                    AND cars.carNO=agriculturalmachinery.am_SN AND cars.carId=#{carId}
+                    AND cars.carNO=agriculturalmachinery.am_SN AND agriculturalmachinery.am_SN=#{carId}
     </select>
 
 </mapper>
